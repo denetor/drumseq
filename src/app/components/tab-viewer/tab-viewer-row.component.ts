@@ -7,12 +7,22 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 @Component({
   selector: 'app-tab-viewer-row',
   template: `
-    <div *ngFor="let measure of row.measures" class="row">
-      <app-tab-viewer-measure [measure]="measure"></app-tab-viewer-measure>
+    <div class="row">
+      <div class="inline">
+        HH | <br />
+        SD | <br />
+        BD | <br />
+        __ |
+      </div>
+      <div *ngFor="let measure of row.measures" class="inline">
+        <app-tab-viewer-measure [measure]="measure"></app-tab-viewer-measure>
+      </div>
     </div>
   `,
   styles: [`
     .row
+      font-family: monospace
+    .inline
       display: inline-block
   `],
   standalone: true,
