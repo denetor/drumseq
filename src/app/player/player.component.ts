@@ -34,6 +34,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.beatQuarterSubscription.unsubscribe();
   }
 
+
   play() {
     this.playStatus = new PlayStatus();
     this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
@@ -44,13 +45,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
     );
   }
 
+
   stop() {
     this.beatQuarterSubscription.unsubscribe();
   }
 
 
   advanceTick(project: Project, status: PlayStatus): PlayStatus {
-    console.log('advanceTick()');
     status.quarter++;
     if (status.quarter >= 4) {
       status.quarter = 0;
@@ -68,7 +69,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
       status.row = 0;
       this.stop();
     }
-    console.log(status);
     return status;
   }
 }

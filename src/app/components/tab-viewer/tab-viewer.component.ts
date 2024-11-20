@@ -6,9 +6,9 @@ import {TabViewerRowComponent} from './tab-viewer-row.component';
 @Component({
   selector: 'app-tab-viewer',
   template: `
-    <div *ngFor="let row of project.rows">
-      <app-tab-viewer-row [row]="row"></app-tab-viewer-row>
-    </div>
+    @for(row of project.rows; track row; let i = $index) {
+      <app-tab-viewer-row [row]="row" class="row-{{i}}"></app-tab-viewer-row>
+    }
   `,
   standalone: true,
   imports: [

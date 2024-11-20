@@ -14,9 +14,9 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
         BD | <br />
         __ |
       </div>
-      <div *ngFor="let measure of row.measures" class="inline">
-        <app-tab-viewer-measure [measure]="measure"></app-tab-viewer-measure>
-      </div>
+      @for(measure of row.measures; track measure; let i = $index) {
+        <app-tab-viewer-measure class="inline" [measure]="measure"></app-tab-viewer-measure>
+      }
     </div>
     <div>
       <br>
