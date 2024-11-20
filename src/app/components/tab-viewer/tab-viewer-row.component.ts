@@ -15,7 +15,7 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
         __ |
       </div>
       @for(measure of row.measures; track measure; let i = $index) {
-        <app-tab-viewer-measure class="inline" [measure]="measure"></app-tab-viewer-measure>
+        <app-tab-viewer-measure class="inline" [measure]="measure" [rowIndex]="rowIndex" [measureIndex]="i" id="row-{{rowIndex}}-measure-{{i}}"></app-tab-viewer-measure>
       }
     </div>
     <div>
@@ -40,9 +40,11 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 })
 export class TabViewerRowComponent implements OnInit {
   @Input() row: Row;
+  @Input() rowIndex: number;
 
   constructor() {
     this.row = new Row();
+    this.rowIndex = 0;
   }
 
   ngOnInit() {

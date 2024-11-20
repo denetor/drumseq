@@ -10,14 +10,14 @@ import {TabViewerQuarterComponent} from './tab-viewer-quarter.component';
   selector: 'app-tab-viewer-beat',
   template: `
     <div class="inline">
-      @for(quarter of beat.quarters; track quarter; let i = $index) {
-        <app-tab-viewer-quarter [quarter]="quarter" [index]="index"></app-tab-viewer-quarter>
+      @for (quarter of beat.quarters; track quarter; let i = $index) {
+        <app-tab-viewer-quarter [quarter]="quarter" [index]="beatIndex" id="row-{{rowIndex}}-measure-{{measureIndex}}-beat-{{beatIndex}}-quarter-{{i}}"></app-tab-viewer-quarter>
       }
       <div class="inline">
-      | <br />
-      | <br />
-      | <br />
-      |
+        | <br/>
+        | <br/>
+        | <br/>
+        |
       </div>
     </div>
   `,
@@ -36,10 +36,15 @@ import {TabViewerQuarterComponent} from './tab-viewer-quarter.component';
 })
 export class TabViewerBeatComponent implements OnInit {
   @Input() beat: Beat;
-  @Input() index: number = 1;
+  @Input() rowIndex: number;
+  @Input() measureIndex: number;
+  @Input() beatIndex: number;
 
   constructor() {
     this.beat = new Beat();
+    this.rowIndex = 0;
+    this.measureIndex = 0;
+    this.beatIndex = 0;
   }
 
   ngOnInit() {
