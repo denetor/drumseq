@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Project} from '../core/models/project.class';
 import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component';
-import {interval, Observable, Subscription, take} from 'rxjs';
+import {interval, Observable, Subscription} from 'rxjs';
 import {PlayStatus} from '../core/models/play-status.class';
+import {Instrument} from '../core/models/instrument.enum';
 
 @Component({
   selector: 'app-player',
@@ -34,7 +35,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
     this.metronomeClick.load();
     this.metronomeClickMeasure.load();
-
   }
 
   ngOnDestroy() {
@@ -52,6 +52,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
           this.playStatus = this.advanceTick(this.project, this.playStatus);
           this.enhanceBeat(this.playStatus);
           this.metronome(this.playStatus);
+          this.playBeat(this.playStatus);
         }
       );
     }
@@ -111,10 +112,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
     // }
   }
 
+
   metronome(status: PlayStatus) {
     if (status.metronome && status.beat === this.project.configuration.beatsPerMeasure -1 && status.quarter === 0) {
+      this.metronomeClickMeasure.currentTime = 0;
       this.metronomeClickMeasure.play();
     } else if (status.metronome && status.quarter === 0) {
+      this.metronomeClick.currentTime = 0;
       this.metronomeClick.play();
     }
   }
@@ -122,6 +126,32 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   toggleMetronome() {
     this.playStatus.metronome = !this.playStatus.metronome;
+  }
+
+
+  playBeat(status: PlayStatus) {
+    const notes = this.project.rows[status.row].measures[status.measure].beats[status.beat].quarters[status.quarter].notes;
+    if (notes && notes.length) {
+      notes.forEach((note) => {
+        let sound;
+        switch (note.instrument) {
+          case Instrument.BASS:
+            sound = new Audio('/samples/set0/kick.mp3');
+            break;
+          case Instrument.SNARE:
+            sound = new Audio('/samples/set0/snare.mp3');
+            break;
+          case Instrument.HAT:
+            sound = new Audio('/samples/set0/hiHat.mp3');
+            break;
+        }
+        if (sound) {
+          sound.load();
+          sound.currentTime = 0;
+          sound.play();
+        }
+      });
+    }
   }
 
 }
