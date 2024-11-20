@@ -9,12 +9,26 @@ import {Beat} from '../../core/models/beat.class';
   selector: 'app-tab-viewer-beat',
   template: `
     <div class="inline">
-      ----| <br />
-      ----| <br />
-      ----| <br />
-      {{ index + 1 }} + |
+      @for(quarter of beat.quarters; track quarter; let i = $index) {
+        <div class="inline">
+          -<br />
+          -<br />
+          -<br />
+          {{ index + 1 }}
+        </div>
+      }
+      <div class="inline">
+      | <br />
+      | <br />
+      | <br />
+      |
+      </div>
     </div>
   `,
+  styles: [`
+    .inline
+      display: inline-block
+  `],
   standalone: true,
   imports: [
     NgForOf

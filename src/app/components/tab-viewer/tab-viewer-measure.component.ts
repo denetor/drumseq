@@ -11,6 +11,12 @@ import {TabViewerBeatComponent} from './tab-viewer-beat.component';
     @for(beat of measure.beats; track beat; let i = $index) {
       <app-tab-viewer-beat [index]="i" class="inline"></app-tab-viewer-beat>
     }
+    <div class="inline">
+      |<br />
+      |<br />
+      |<br />
+      |
+    </div>
   `,
   standalone: true,
   imports: [
