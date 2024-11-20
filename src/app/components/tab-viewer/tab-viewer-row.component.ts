@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {JsonPipe} from '@angular/common';
 import {Row} from '../../core/models/row.class';
 import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 
@@ -17,15 +16,10 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
         <app-tab-viewer-measure class="inline" [measure]="measure" [rowIndex]="rowIndex" [measureIndex]="i" id="row-{{rowIndex}}-measure-{{i}}"></app-tab-viewer-measure>
       }
     </div>
-    <div>
-      <br>
-      {{ row | json }}
-    </div>
   `,
   standalone: true,
   imports: [
     TabViewerMeasureComponent,
-    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']
