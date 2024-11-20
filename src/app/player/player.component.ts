@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   beatQuarterSubscription: Subscription;
   playStatus: PlayStatus;
   metronomeClick: any;
+  metronomeClickMeasure: any;
 
   constructor() {
     this.project = new Project();
@@ -30,7 +31,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.project = new Project();
     this.metronomeClick = new Audio('/samples/metronome-click-0.mp3');
+    this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
     this.metronomeClick.load();
+    this.metronomeClickMeasure.load();
+
   }
 
   ngOnDestroy() {
@@ -104,7 +108,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   metronome(status: PlayStatus) {
-    if (status.quarter === 0 && status.metronome) {
+    if (status.metronome && status.beat === this.project.configuration.beatsPerMeasure -1 && status.quarter === 0) {
+      this.metronomeClickMeasure.play();
+    } else if (status.metronome && status.quarter === 0) {
       this.metronomeClick.play();
     }
   }
