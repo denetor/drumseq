@@ -2,5 +2,6 @@
 <div>
   <button (click)="play()">Start</button>
   <button (click)="stop()">Stop</button>
+  <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span>
 </div>
 <app-tab-viewer [project]="project"></app-tab-viewer>
