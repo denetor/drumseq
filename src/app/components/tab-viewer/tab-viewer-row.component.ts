@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
-import {NgForOf} from '@angular/common';
+import {JsonPipe, NgForOf} from '@angular/common';
 import {Row} from '../../core/models/row.class';
 import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 
@@ -18,6 +18,10 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
         <app-tab-viewer-measure [measure]="measure"></app-tab-viewer-measure>
       </div>
     </div>
+    <div>
+      <br>
+      {{ row | json }}
+    </div>
   `,
   styles: [`
     .row
@@ -28,7 +32,8 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
   standalone: true,
   imports: [
     NgForOf,
-    TabViewerMeasureComponent
+    TabViewerMeasureComponent,
+    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   // styleUrls: ['./tab-viewer.component.css']
@@ -41,6 +46,6 @@ export class TabViewerRowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.row = new Row();
+    // this.row = new Row();
   }
 }

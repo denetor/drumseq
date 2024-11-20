@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
-import {NgForOf} from '@angular/common';
+import {JsonPipe, NgForOf} from '@angular/common';
 import {TabViewerRowComponent} from './tab-viewer-row.component';
 
 @Component({
@@ -13,7 +13,8 @@ import {TabViewerRowComponent} from './tab-viewer-row.component';
   standalone: true,
   imports: [
     NgForOf,
-    TabViewerRowComponent
+    TabViewerRowComponent,
+    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   // styleUrls: ['./tab-viewer.component.css']

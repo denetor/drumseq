@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
-import {NgForOf} from '@angular/common';
+import {JsonPipe, NgForOf} from '@angular/common';
 import {Row} from '../../core/models/row.class';
 import {Measure} from '../../core/models/measure.class';
 import {TabViewerBeatComponent} from './tab-viewer-beat.component';
@@ -9,7 +9,7 @@ import {TabViewerBeatComponent} from './tab-viewer-beat.component';
   selector: 'app-tab-viewer-measure',
   template: `
     @for(beat of measure.beats; track beat; let i = $index) {
-      <app-tab-viewer-beat [index]="i" class="inline"></app-tab-viewer-beat>
+      <app-tab-viewer-beat [beat]="beat" [index]="i" class="inline"></app-tab-viewer-beat>
     }
     <div class="inline">
       |<br />
@@ -21,7 +21,8 @@ import {TabViewerBeatComponent} from './tab-viewer-beat.component';
   standalone: true,
   imports: [
     NgForOf,
-    TabViewerBeatComponent
+    TabViewerBeatComponent,
+    JsonPipe
   ],
   styles: `
     .inline
@@ -38,6 +39,6 @@ export class TabViewerMeasureComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.measure = new Measure();
+    // this.measure = new Measure();
   }
 }

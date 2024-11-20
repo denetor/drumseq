@@ -8,4 +8,8 @@ export class Note {
     this.instrument = instrument;
     this.accent = accent ?? false;
   }
+
+  tabSymbol(): string {
+    return '-';
+  }
 }
