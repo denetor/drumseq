@@ -43,22 +43,26 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   play() {
-    this.playStatus.setAtStart();
-    this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
-    this.beatQuarterSubscription = this.beatQuarter$.subscribe(
-      (tick) => {
-        this.unEnhanceBeat(this.playStatus);
-        this.playStatus = this.advanceTick(this.project, this.playStatus);
-        this.enhanceBeat(this.playStatus);
-        this.metronome(this.playStatus);
-      }
-    );
+    if (!this.playStatus.playing) {
+      this.playStatus.setAtStart();
+      this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
+      this.beatQuarterSubscription = this.beatQuarter$.subscribe(
+        (tick) => {
+          this.unEnhanceBeat(this.playStatus);
+          this.playStatus = this.advanceTick(this.project, this.playStatus);
+          this.enhanceBeat(this.playStatus);
+          this.metronome(this.playStatus);
+        }
+      );
+    }
   }
 
 
   stop() {
     this.beatQuarterSubscription.unsubscribe();
+    this.unEnhanceBeat(this.playStatus);
     this.metronomeClick.pause();
+    this.playStatus.playing = false;
   }
 
 

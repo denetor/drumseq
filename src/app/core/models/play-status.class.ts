@@ -4,6 +4,7 @@ export class PlayStatus {
   beat: number;
   quarter: number;
   metronome: boolean;
+  playing: boolean;
 
   constructor() {
     this.row = 0;
@@ -11,6 +12,7 @@ export class PlayStatus {
     this.beat = 0;
     this.quarter = -1;
     this.metronome = false;
+    this.playing = false;
   }
 
   setAtStart() {
@@ -18,5 +20,6 @@ export class PlayStatus {
     this.measure = 0;
     this.beat = 0;
     this.quarter = -1;
+    this.playing = true;
   }
 }
