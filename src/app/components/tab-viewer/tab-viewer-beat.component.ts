@@ -21,10 +21,6 @@ import {TabViewerQuarterComponent} from './tab-viewer-quarter.component';
       </div>
     </div>
   `,
-  styles: [`
-    .inline
-      display: inline-block
-  `],
   standalone: true,
   imports: [
     NgForOf,
@@ -32,7 +28,7 @@ import {TabViewerQuarterComponent} from './tab-viewer-quarter.component';
     JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
-  // styleUrls: ['./tab-viewer.component.css']
+  styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerBeatComponent implements OnInit {
   @Input() beat: Beat;

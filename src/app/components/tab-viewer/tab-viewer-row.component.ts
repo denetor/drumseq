@@ -23,12 +23,6 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
       {{ row | json }}
     </div>
   `,
-  styles: [`
-    .row
-      font-family: monospace
-    .inline
-      display: inline-block
-  `],
   standalone: true,
   imports: [
     NgForOf,
@@ -36,7 +30,7 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
     JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
-  // styleUrls: ['./tab-viewer.component.css']
+  styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerRowComponent implements OnInit {
   @Input() row: Row;

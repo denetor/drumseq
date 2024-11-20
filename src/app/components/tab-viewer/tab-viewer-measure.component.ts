@@ -24,12 +24,8 @@ import {TabViewerBeatComponent} from './tab-viewer-beat.component';
     TabViewerBeatComponent,
     JsonPipe
   ],
-  styles: `
-    .inline
-      display: inline-block
-  `,
   // templateUrl: './tab-viewer.component.html',
-  // styleUrls: ['./tab-viewer.component.css']
+  styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerMeasureComponent implements OnInit {
   @Input() measure: Measure;

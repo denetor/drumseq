@@ -17,16 +17,12 @@ import {Instrument} from '../../core/models/instrument.enum';
         {{ index + 1 }}
       </div>
   `,
-  styles: [`
-    .inline
-      display: inline-block
-  `],
   standalone: true,
   imports: [
     NgForOf
   ],
   // templateUrl: './tab-viewer.component.html',
-  // styleUrls: ['./tab-viewer.component.css']
+  styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerQuarterComponent implements OnInit {
   @Input() quarter: Quarter;

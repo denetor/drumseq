@@ -17,7 +17,7 @@ import {TabViewerRowComponent} from './tab-viewer-row.component';
     JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
-  // styleUrls: ['./tab-viewer.component.css']
+  styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerComponent implements OnInit {
   @Input() project: Project;
