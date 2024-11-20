@@ -10,6 +10,15 @@ export class Note {
   }
 
   tabSymbol(): string {
-    return '-';
+    switch (this.instrument) {
+      case Instrument.CHINA:
+      case Instrument.CRASH:
+      case Instrument.HAT:
+      case Instrument.OPEN_HAT:
+      case Instrument.RIDE:
+          return 'x';
+      default:
+        return 'o';
+    }
   }
 }

@@ -41,11 +41,9 @@ export class TabViewerQuarterComponent implements OnInit {
   }
 
   noteSymbol(instrument: Instrument): string {
-    console.log({quarter: this.quarter});
     for (const note of this.quarter.notes) {
-      console.log({note});
       if (note.instrument === instrument) {
-        return 'o';
+        return note.tabSymbol();
       }
     }
     return '-';
