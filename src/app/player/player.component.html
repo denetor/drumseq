@@ -1,2 +1,6 @@
 <p>{{ project.name }}</p>
+<div>
+  <button (click)="play()">Start</button>
+  <button (click)="stop()">Stop</button>
+</div>
 <app-tab-viewer [project]="project"></app-tab-viewer>
