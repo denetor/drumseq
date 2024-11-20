@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
-import {JsonPipe, NgForOf} from '@angular/common';
 import {TabViewerRowComponent} from './tab-viewer-row.component';
 
 @Component({
