@@ -4,12 +4,14 @@ import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component'
 import {interval, Observable, Subscription} from 'rxjs';
 import {PlayStatus} from '../core/models/play-status.class';
 import {Instrument} from '../core/models/instrument.enum';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-player',
   standalone: true,
   imports: [
-    TabViewerComponent
+    TabViewerComponent,
+    FormsModule
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass'
@@ -142,7 +144,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
             sound = new Audio('/samples/set0/snare.mp3');
             break;
           case Instrument.HAT:
-            sound = new Audio('/samples/set0/hiHat.mp3');
+            sound = new Audio('/samples/set0/hi-hat.mp3');
             break;
         }
         if (sound) {
