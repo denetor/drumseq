@@ -3,11 +3,13 @@ export class PlayStatus {
   measure: number;
   beat: number;
   quarter: number;
+  metronome: boolean;
 
   constructor() {
     this.row = 0;
     this.measure = 0;
     this.beat = 0;
     this.quarter = 0;
+    this.metronome = false;
   }
 }
