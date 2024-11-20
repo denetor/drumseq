@@ -23,9 +23,7 @@ import {TabViewerQuarterComponent} from './tab-viewer-quarter.component';
   `,
   standalone: true,
   imports: [
-    NgForOf,
     TabViewerQuarterComponent,
-    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']

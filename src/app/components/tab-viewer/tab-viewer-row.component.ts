@@ -25,7 +25,6 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
   `,
   standalone: true,
   imports: [
-    NgForOf,
     TabViewerMeasureComponent,
     JsonPipe
   ],

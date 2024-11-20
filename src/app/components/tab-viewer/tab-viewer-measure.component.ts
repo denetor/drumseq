@@ -20,9 +20,7 @@ import {TabViewerBeatComponent} from './tab-viewer-beat.component';
   `,
   standalone: true,
   imports: [
-    NgForOf,
     TabViewerBeatComponent,
-    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']

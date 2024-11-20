@@ -18,9 +18,6 @@ import {Instrument} from '../../core/models/instrument.enum';
       </div>
   `,
   standalone: true,
-  imports: [
-    NgForOf
-  ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']
 })

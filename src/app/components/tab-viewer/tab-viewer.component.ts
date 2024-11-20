@@ -12,9 +12,7 @@ import {TabViewerRowComponent} from './tab-viewer-row.component';
   `,
   standalone: true,
   imports: [
-    NgForOf,
     TabViewerRowComponent,
-    JsonPipe
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']
