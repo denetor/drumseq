@@ -12,4 +12,11 @@ export class PlayStatus {
     this.quarter = 0;
     this.metronome = false;
   }
+
+  setAtStart() {
+    this.row = 0;
+    this.measure = 0;
+    this.beat = 0;
+    this.quarter = 0;
+  }
 }

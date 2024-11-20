@@ -39,8 +39,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   play() {
-    // this.metronome(this.playStatus);
-    this.playStatus = new PlayStatus();
+    this.playStatus.setAtStart();
     this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
     this.beatQuarterSubscription = this.beatQuarter$.subscribe(
       (tick) => {
@@ -109,4 +108,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.metronomeClick.play();
     }
   }
+
+
+  toggleMetronome() {
+    this.playStatus.metronome = !this.playStatus.metronome;
+  }
+
 }
