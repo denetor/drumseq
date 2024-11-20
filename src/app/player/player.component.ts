@@ -31,7 +31,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.beatQuarterSubscription.unsubscribe();
+    this.stop();
   }
 
 
@@ -40,7 +40,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
     this.beatQuarterSubscription = this.beatQuarter$.subscribe(
       (tick) => {
+        this.unEnhanceBeat(this.playStatus);
         this.playStatus = this.advanceTick(this.project, this.playStatus);
+        this.enhanceBeat(this.playStatus);
       }
     );
   }
@@ -70,5 +72,29 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.stop();
     }
     return status;
+  }
+
+
+  enhanceBeat(status: PlayStatus) {
+    const beat = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat);
+    if (beat) {
+      beat.style.backgroundColor = '#ffffaa';
+    }
+    // const quarter = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat + '-quarter-' + status.quarter);
+    // if (quarter) {
+    //   quarter.style.backgroundColor = '#ffffaa';
+    // }
+  }
+
+
+  unEnhanceBeat(status: PlayStatus) {
+    const beat = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat);
+    if (beat) {
+      beat.style.backgroundColor = '#ffffff';
+    }
+    // const quarter = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat + '-quarter-' + status.quarter);
+    // if (quarter) {
+    //   quarter.style.backgroundColor = '#ffffaa';
+    // }
   }
 }
