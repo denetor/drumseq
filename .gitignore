@@ -36,6 +36,7 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+public/samples/set0/*.wav
 
 # System files
 .DS_Store
