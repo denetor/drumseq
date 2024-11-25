@@ -11,4 +11,11 @@ export class Row {
     }
     this.repetitions = 1;
   }
+
+  clone(): Row {
+    const clonedRow = new Row();
+    clonedRow.measures = this.measures.map(measure => measure.clone());
+    clonedRow.repetitions = this.repetitions;
+    return clonedRow;
+  }
 }

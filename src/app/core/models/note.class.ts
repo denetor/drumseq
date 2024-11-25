@@ -9,6 +9,10 @@ export class Note {
     this.accent = accent ?? false;
   }
 
+  clone(): Note {
+    return new Note(this.instrument, this.accent);
+  }
+
   tabSymbol(): string {
     switch (this.instrument) {
       case Instrument.CHINA:

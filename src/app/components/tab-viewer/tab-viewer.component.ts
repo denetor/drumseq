@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
 import {TabViewerRowComponent} from './tab-viewer-row.component';
-import {Observable} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -18,14 +18,21 @@ import {Observable} from 'rxjs';
   styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerComponent implements OnInit {
-  @Input() project: Project;
-  // @Input() project$: Observable<Project>;
+  private subscription: Subscription;
+  // @Input() project: Project;
+  project: Project;
+  @Input() project$: Observable<Project>;
 
   constructor() {
     this.project = new Project();
+    this.project$ = new Observable();
+    this.subscription = new Subscription();
   }
 
   ngOnInit() {
     this.project = new Project();
+    this.subscription.add(this.project$.subscribe(project => {
+      this.project = project.clone();
+    }));
   }
 }

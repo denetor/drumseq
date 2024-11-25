@@ -191,4 +191,14 @@ export class Project {
     this.rows[1].measures[3].beats[3].quarters[0].notes.push(new Note(Instrument.SNARE));
     this.rows[1].measures[3].beats[3].quarters[2].notes.push(new Note(Instrument.HAT));
   }
+
+
+  clone(): Project {
+    const clonedProject = new Project();
+    clonedProject.name = this.name;
+    clonedProject.configuration = { ...this.configuration };
+    clonedProject.rows = this.rows.map(row => row.clone());
+    return clonedProject;
+  }
+
 }

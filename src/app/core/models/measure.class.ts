@@ -11,4 +11,12 @@ export class Measure {
     }
     this.repetitions = 1;
   }
+
+  clone(): Measure {
+    const clonedMeasure = new Measure();
+    clonedMeasure.beats = this.beats.map(beat => beat.clone());
+    clonedMeasure.repetitions = this.repetitions;
+    return clonedMeasure;
+  }
+
 }

@@ -10,4 +10,10 @@ export class Beat {
       this.quarters.push(new Quarter());
     }
   }
+
+  clone(): Beat {
+    const newBeat = new Beat();
+    newBeat.quarters = this.quarters.map(quarter => quarter.clone());
+    return newBeat;
+  }
 }

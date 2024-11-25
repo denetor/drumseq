@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Project} from '../core/models/project.class';
 import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component';
-import {interval, Observable, Subscription} from 'rxjs';
+import {interval, Observable, of, Subscription} from 'rxjs';
 import {PlayStatus} from '../core/models/play-status.class';
 import {Instrument} from '../core/models/instrument.enum';
 import {FormsModule} from '@angular/forms';
@@ -23,6 +23,7 @@ import {JsonPipe} from '@angular/common';
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   project: Project;
+  @Input() project$: Observable<Project>;
   beatQuarter$: Observable<number>;
   beatQuarterSubscription: Subscription;
   playStatus: PlayStatus;
@@ -31,6 +32,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.project = new Project();
+    this.project$ = of(this.project);
     this.beatQuarter$ = new Observable();
     this.beatQuarterSubscription = new Subscription();
     this.playStatus = new PlayStatus();
@@ -38,6 +40,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.project = new Project();
+    this.project$ = of(this.project);
     this.metronomeClick = new Audio('/samples/metronome-click-0.mp3');
     this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
     this.metronomeClick.load();
@@ -164,6 +167,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   importProject(project: Project) {
     this.project = project;
+    this.project$ = of(this.project);
   }
 
 }
