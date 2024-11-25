@@ -1,20 +1,25 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {Project} from '../core/models/project.class';
 import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component';
 import {interval, Observable, Subscription} from 'rxjs';
 import {PlayStatus} from '../core/models/play-status.class';
 import {Instrument} from '../core/models/instrument.enum';
 import {FormsModule} from '@angular/forms';
+import {JsonExportComponent} from '../components/json-export/json-export.component';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-player',
   standalone: true,
   imports: [
     TabViewerComponent,
-    FormsModule
+    FormsModule,
+    JsonExportComponent,
+    JsonPipe
   ],
   templateUrl: './player.component.html',
-  styleUrl: './player.component.sass'
+  styleUrl: './player.component.sass',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   project: Project;
@@ -154,6 +159,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+
+  importProject(project: Project) {
+    this.project = project;
   }
 
 }

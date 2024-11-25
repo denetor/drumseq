@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../core/models/project.class';
 import {TabViewerRowComponent} from './tab-viewer-row.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -18,6 +19,7 @@ import {TabViewerRowComponent} from './tab-viewer-row.component';
 })
 export class TabViewerComponent implements OnInit {
   @Input() project: Project;
+  // @Input() project$: Observable<Project>;
 
   constructor() {
     this.project = new Project();

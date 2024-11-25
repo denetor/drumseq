@@ -1,0 +1,12 @@
+<p>Import/export</p>
+<div>
+  <form [formGroup]="exportForm">
+    <div>
+      <button title="Esporta il progetto in formato JSON" (click)="exportToJson()">Export to text</button>
+      <button title="Applica il contenuto della textarea" (click)="importFromJson()">Import from text</button>
+    </div>
+    <div>
+      <textarea formControlName="body" rows="10" cols="80"></textarea>
+    </div>
+  </form>
+</div>
