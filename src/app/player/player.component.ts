@@ -1,12 +1,16 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Project} from '../core/models/project.class';
 import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component';
-import {interval, Observable, of, Subscription} from 'rxjs';
+import {interval, Observable, of, Subject, Subscription} from 'rxjs';
 import {PlayStatus} from '../core/models/play-status.class';
 import {Instrument} from '../core/models/instrument.enum';
 import {FormsModule} from '@angular/forms';
 import {JsonExportComponent} from '../components/json-export/json-export.component';
 import {JsonPipe} from '@angular/common';
+import {Row} from '../core/models/row.class';
+import {Measure} from '../core/models/measure.class';
+import {Beat} from '../core/models/beat.class';
+import {Quarter} from '../core/models/quarter.class';
 
 @Component({
   selector: 'app-player',
@@ -22,8 +26,9 @@ import {JsonPipe} from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
   project: Project;
-  @Input() project$: Observable<Project>;
+  projectSubject: Subject<Project>;
   beatQuarter$: Observable<number>;
   beatQuarterSubscription: Subscription;
   playStatus: PlayStatus;
@@ -31,8 +36,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   metronomeClickMeasure: any;
 
   constructor() {
+    this.subscription = new Subscription();
     this.project = new Project();
-    this.project$ = of(this.project);
+    this.projectSubject = new Subject<Project>();
     this.beatQuarter$ = new Observable();
     this.beatQuarterSubscription = new Subscription();
     this.playStatus = new PlayStatus();
@@ -40,7 +46,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.project = new Project();
-    this.project$ = of(this.project);
+    this.subscription.add(this.projectSubject.subscribe(project => {
+      console.log('Project update in player-component detected:');
+      console.log({project});
+    }));
+    this.projectSubject.next(this.project);
+
     this.metronomeClick = new Audio('/samples/metronome-click-0.mp3');
     this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
     this.metronomeClick.load();
@@ -49,6 +60,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stop();
+    this.subscription.unsubscribe();
+    this.beatQuarterSubscription.unsubscribe();
   }
 
 
@@ -165,9 +178,36 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  // note: project argument is not a Project instance, as it's only the json Parse
+  // as a result, it has no method such clone() thet would be useful
+  // so we must clone the project object manually :-(
   importProject(project: Project) {
-    this.project = project;
-    this.project$ = of(this.project);
+    this.project = new Project();
+    this.project.name = project.name;
+    this.project.configuration = project.configuration;
+    this.project.rows = [];
+    for (const row of project.rows) {
+      const newRow = new Row();
+      newRow.measures = [];
+      for (const measure of row.measures) {
+        const newMeasure = new Measure();
+        newMeasure.repetitions = measure.repetitions;
+        newMeasure.beats = [];
+        for (const beat of measure.beats) {
+          const newBeat = new Beat();
+          newBeat.quarters = [];
+          for (const quarter of beat.quarters) {
+            const newQuarter = new Quarter();
+            newQuarter.notes = [...quarter.notes];
+            newBeat.quarters.push(newQuarter);
+          }
+          newMeasure.beats.push(newBeat);
+        }
+        newRow.measures.push(newMeasure);
+      }
+      this.project.rows.push(newRow);
+    }
+    this.projectSubject.next(this.project);
   }
 
 }
