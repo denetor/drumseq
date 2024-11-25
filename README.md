@@ -1,9 +1,23 @@
 # Drumseq
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
-
 ## Resources
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
+
+## TODO
+### Short term todo
+- Try using `this.Sounds["L_Explosion1"].cloneNode(true).play();` to play sounds that overlap.
+- Export to json
+- Import from json
+- Selectable list of instruments to show
+### Next steps
+- Use Web Audio API (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) instead of html5 audio
+- Edit mode
+  - Add empty row
+  - Edit a measure
+  - Copy measure
+  - Copy row
+  - Move a row
+  - Move a measure
 
 ## Development server
 
@@ -11,7 +25,7 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 - node 20
 - angular 18
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `npm run start` for a dev server. Navigate to `http://localhost:4201/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
