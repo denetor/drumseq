@@ -187,39 +187,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  // note: project argument is not a Project instance, as it's only the json Parse
-  // as a result, it has no method such clone() thet would be useful
-  // so we must clone the project object manually :-(
   importProject(project: Project) {
     // this.store.dispatch(ProjectActions.updateName({name: project.name}));
     this.store.dispatch(ProjectActions.import({project: project}));
-
-
-    // this.project = new Project();
-    // this.project.name = project.name;
-    // this.project.configuration = project.configuration;
-    // this.project.rows = [];
-    // for (const row of project.rows) {
-    //   const newRow = new Row();
-    //   newRow.measures = [];
-    //   for (const measure of row.measures) {
-    //     const newMeasure = new Measure();
-    //     newMeasure.repetitions = measure.repetitions;
-    //     newMeasure.beats = [];
-    //     for (const beat of measure.beats) {
-    //       const newBeat = new Beat();
-    //       newBeat.quarters = [];
-    //       for (const quarter of beat.quarters) {
-    //         const newQuarter = new Quarter();
-    //         newQuarter.notes = [...quarter.notes];
-    //         newBeat.quarters.push(newQuarter);
-    //       }
-    //       newMeasure.beats.push(newBeat);
-    //     }
-    //     newRow.measures.push(newMeasure);
-    //   }
-    //   this.project.rows.push(newRow);
-    // }
   }
 
 }
