@@ -56,7 +56,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.projectState$ = this.store.select('project');
     this.subscription.add(
       this.store.select('project').subscribe(projectState => {
-        console.log({projectState});
         this.project = projectState.project;
       })
     );

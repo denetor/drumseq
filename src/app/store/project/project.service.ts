@@ -4,6 +4,7 @@ import {Row} from '../../core/models/row.class';
 import {Measure} from '../../core/models/measure.class';
 import {Beat} from '../../core/models/beat.class';
 import {Quarter} from '../../core/models/quarter.class';
+import {Note} from '../../core/models/note.class';
 
 @Injectable()
 export class ProjectService {
@@ -26,7 +27,11 @@ export class ProjectService {
           newBeat.quarters = [];
           for (const quarter of beat.quarters) {
             const newQuarter = new Quarter();
-            newQuarter.notes = [...quarter.notes];
+            newQuarter.notes = [];
+            for (const note of quarter.notes) {
+              const newNote = new Note(note.instrument, note.accent);
+              newQuarter.notes.push(newNote);
+            }
             newBeat.quarters.push(newQuarter);
           }
           newMeasure.beats.push(newBeat);
