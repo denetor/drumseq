@@ -14,6 +14,7 @@ export class Project {
       measuresPerBar: 4,
       beatsPerMeasure: 4,
     };
+    // this.rows = [];
     this.rows = [
       new Row(this.configuration.beatsPerMeasure, this.configuration.measuresPerBar),
       new Row(this.configuration.beatsPerMeasure, this.configuration.measuresPerBar),

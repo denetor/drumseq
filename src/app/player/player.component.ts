@@ -11,6 +11,10 @@ import {Row} from '../core/models/row.class';
 import {Measure} from '../core/models/measure.class';
 import {Beat} from '../core/models/beat.class';
 import {Quarter} from '../core/models/quarter.class';
+import {IAppState} from '../store/app-state.interface';
+import {Store} from '@ngrx/store';
+import {IProjectState} from '../store/project/project.reducer';
+import {ProjectActions} from '../store/project/project.actions';
 
 @Component({
   selector: 'app-player',
@@ -28,17 +32,19 @@ import {Quarter} from '../core/models/quarter.class';
 export class PlayerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   project: Project;
-  projectSubject: Subject<Project>;
+  projectState$: Observable<IProjectState>;
   beatQuarter$: Observable<number>;
   beatQuarterSubscription: Subscription;
   playStatus: PlayStatus;
   metronomeClick: any;
   metronomeClickMeasure: any;
 
-  constructor() {
-    this.subscription = new Subscription();
+  constructor(
+    private readonly store: Store<IAppState>,
+  ) {
     this.project = new Project();
-    this.projectSubject = new Subject<Project>();
+    this.projectState$ = new Observable();
+    this.subscription = new Subscription();
     this.beatQuarter$ = new Observable();
     this.beatQuarterSubscription = new Subscription();
     this.playStatus = new PlayStatus();
@@ -46,11 +52,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.project = new Project();
-    this.subscription.add(this.projectSubject.subscribe(project => {
-      console.log('Project update in player-component detected:');
-      console.log({project});
-    }));
-    this.projectSubject.next(this.project);
+
+    this.projectState$ = this.store.select('project');
+    this.subscription.add(
+      this.store.select('project').subscribe(projectState => {
+        console.log({projectState});
+        this.project = projectState.project;
+      })
+    );
 
     this.metronomeClick = new Audio('/samples/metronome-click-0.mp3');
     this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
@@ -182,32 +191,35 @@ export class PlayerComponent implements OnInit, OnDestroy {
   // as a result, it has no method such clone() thet would be useful
   // so we must clone the project object manually :-(
   importProject(project: Project) {
-    this.project = new Project();
-    this.project.name = project.name;
-    this.project.configuration = project.configuration;
-    this.project.rows = [];
-    for (const row of project.rows) {
-      const newRow = new Row();
-      newRow.measures = [];
-      for (const measure of row.measures) {
-        const newMeasure = new Measure();
-        newMeasure.repetitions = measure.repetitions;
-        newMeasure.beats = [];
-        for (const beat of measure.beats) {
-          const newBeat = new Beat();
-          newBeat.quarters = [];
-          for (const quarter of beat.quarters) {
-            const newQuarter = new Quarter();
-            newQuarter.notes = [...quarter.notes];
-            newBeat.quarters.push(newQuarter);
-          }
-          newMeasure.beats.push(newBeat);
-        }
-        newRow.measures.push(newMeasure);
-      }
-      this.project.rows.push(newRow);
-    }
-    this.projectSubject.next(this.project);
+    // this.store.dispatch(ProjectActions.updateName({name: project.name}));
+    this.store.dispatch(ProjectActions.import({project: project}));
+
+
+    // this.project = new Project();
+    // this.project.name = project.name;
+    // this.project.configuration = project.configuration;
+    // this.project.rows = [];
+    // for (const row of project.rows) {
+    //   const newRow = new Row();
+    //   newRow.measures = [];
+    //   for (const measure of row.measures) {
+    //     const newMeasure = new Measure();
+    //     newMeasure.repetitions = measure.repetitions;
+    //     newMeasure.beats = [];
+    //     for (const beat of measure.beats) {
+    //       const newBeat = new Beat();
+    //       newBeat.quarters = [];
+    //       for (const quarter of beat.quarters) {
+    //         const newQuarter = new Quarter();
+    //         newQuarter.notes = [...quarter.notes];
+    //         newBeat.quarters.push(newQuarter);
+    //       }
+    //       newMeasure.beats.push(newBeat);
+    //     }
+    //     newRow.measures.push(newMeasure);
+    //   }
+    //   this.project.rows.push(newRow);
+    // }
   }
 
 }

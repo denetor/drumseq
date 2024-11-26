@@ -1,5 +1,7 @@
 import {Project} from '../../core/models/project.class';
-import {createReducer} from '@ngrx/store';
+import {ProjectActions} from './project.actions';
+import {createReducer, on} from '@ngrx/store';
+import {ProjectService} from './project.service';
 
 export interface IProjectState {
   project: Project;
@@ -11,11 +13,16 @@ export const initialState: IProjectState = {
 
 export const projectReducer = createReducer(
   initialState,
-  // on(searchClientiSuccess, (state: ClientiState, action) => {
-  //   console.log('clientiReducer.on.searchClientiSuccess');
-  //   // const newState = JSON.parse(JSON.stringify(state));
-  //   const newState = cloneDeep(state);
-  //   newState.search.items = action.payload;
-  //   return newState;
-  // }),
+
+  on(ProjectActions['import'], (state: IProjectState, action) => {
+    console.log({importActionProps: action});
+    return {project: ProjectService.fromObject(action.project)};
+  }),
+
+  on(ProjectActions['updateName'], (state: IProjectState, action) => {
+    const newProject = state.project.clone();
+    newProject.name = action.name;
+    return {project: newProject};
+  }),
+
 );
