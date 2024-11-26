@@ -38,6 +38,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   playStatus: PlayStatus;
   metronomeClick: any;
   metronomeClickMeasure: any;
+  instruments: any[] = [];
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -64,6 +65,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
     this.metronomeClick.load();
     this.metronomeClickMeasure.load();
+
+    // load sounds
+    this.instruments[Instrument.BASS] = new Audio('/samples/set0/kick.mp3');
+    this.instruments[Instrument.SNARE] = new Audio('/samples/set0/snare.mp3');
+    this.instruments[Instrument.HAT] = new Audio('/samples/set0/hi-hat.mp3');
   }
 
   ngOnDestroy() {
@@ -125,10 +131,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if (beat) {
       beat.style.backgroundColor = '#ffffaa';
     }
-    // const quarter = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat + '-quarter-' + status.quarter);
-    // if (quarter) {
-    //   quarter.style.backgroundColor = '#ffffaa';
-    // }
   }
 
 
@@ -137,20 +139,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
     if (beat) {
       beat.style.backgroundColor = '#ffffff';
     }
-    // const quarter = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat + '-quarter-' + status.quarter);
-    // if (quarter) {
-    //   quarter.style.backgroundColor = '#ffffaa';
-    // }
   }
 
 
   metronome(status: PlayStatus) {
     if (status.metronome && status.beat === this.project.configuration.beatsPerMeasure -1 && status.quarter === 0) {
       this.metronomeClickMeasure.currentTime = 0;
-      this.metronomeClickMeasure.play();
+      this.metronomeClickMeasure.cloneNode(true).play();
     } else if (status.metronome && status.quarter === 0) {
       this.metronomeClick.currentTime = 0;
-      this.metronomeClick.play();
+      this.metronomeClick.cloneNode(true).play();
     }
   }
 
@@ -164,30 +162,15 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const notes = this.project.rows[status.row].measures[status.measure].beats[status.beat].quarters[status.quarter].notes;
     if (notes && notes.length) {
       notes.forEach((note) => {
-        let sound;
-        switch (note.instrument) {
-          case Instrument.BASS:
-            sound = new Audio('/samples/set0/kick.mp3');
-            break;
-          case Instrument.SNARE:
-            sound = new Audio('/samples/set0/snare.mp3');
-            break;
-          case Instrument.HAT:
-            sound = new Audio('/samples/set0/hi-hat.mp3');
-            break;
-        }
-        if (sound) {
-          sound.load();
-          sound.currentTime = 0;
-          sound.play();
-        }
+        try {
+          this.instruments[note.instrument].cloneNode(true).play();
+        } catch (e) {}
       });
     }
   }
 
 
   importProject(project: Project) {
-    // this.store.dispatch(ProjectActions.updateName({name: project.name}));
     this.store.dispatch(ProjectActions.import({project: project}));
   }
 
