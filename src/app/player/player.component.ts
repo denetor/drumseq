@@ -7,10 +7,6 @@ import {Instrument} from '../core/models/instrument.enum';
 import {FormsModule} from '@angular/forms';
 import {JsonExportComponent} from '../components/json-export/json-export.component';
 import {JsonPipe} from '@angular/common';
-import {Row} from '../core/models/row.class';
-import {Measure} from '../core/models/measure.class';
-import {Beat} from '../core/models/beat.class';
-import {Quarter} from '../core/models/quarter.class';
 import {IAppState} from '../store/app-state.interface';
 import {Store} from '@ngrx/store';
 import {IProjectState} from '../store/project/project.reducer';
@@ -36,9 +32,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
   beatQuarter$: Observable<number>;
   beatQuarterSubscription: Subscription;
   playStatus: PlayStatus;
-  metronomeClick: any;
-  metronomeClickMeasure: any;
-  instruments: any[] = [];
+  audioContext: AudioContext;
+  audioElements;
+  audioSources;
+
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -49,6 +46,26 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.beatQuarter$ = new Observable();
     this.beatQuarterSubscription = new Subscription();
     this.playStatus = new PlayStatus();
+    this.audioContext = new AudioContext();
+    this.audioElements = {
+      click: new Audio('/samples/metronome-click-0.mp3'),
+      clickMeasure: new Audio('/samples/metronome-click-1.mp3'),
+      bass: new Audio('/samples/set0/kick.mp3'),
+      snare: new Audio('/samples/set0/snare.mp3'),
+      hat: new Audio('/samples/set0/hi-hat.mp3'),
+    };
+    this.audioSources = {
+      click: this.audioContext.createMediaElementSource(this.audioElements.click),
+      clickMeasure: this.audioContext.createMediaElementSource(this.audioElements.clickMeasure),
+      bass: this.audioContext.createMediaElementSource(this.audioElements.bass),
+      snare: this.audioContext.createMediaElementSource(this.audioElements.snare),
+      hat: this.audioContext.createMediaElementSource(this.audioElements.hat),
+    };
+    this.audioSources.click.connect(this.audioContext.destination);
+    this.audioSources.clickMeasure.connect(this.audioContext.destination);
+    this.audioSources.bass.connect(this.audioContext.destination);
+    this.audioSources.snare.connect(this.audioContext.destination);
+    this.audioSources.hat.connect(this.audioContext.destination);
   }
 
   ngOnInit() {
@@ -60,16 +77,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.project = projectState.project;
       })
     );
-
-    this.metronomeClick = new Audio('/samples/metronome-click-0.mp3');
-    this.metronomeClickMeasure = new Audio('/samples/metronome-click-1.mp3');
-    this.metronomeClick.load();
-    this.metronomeClickMeasure.load();
-
-    // load sounds
-    this.instruments[Instrument.BASS] = new Audio('/samples/set0/kick.mp3');
-    this.instruments[Instrument.SNARE] = new Audio('/samples/set0/snare.mp3');
-    this.instruments[Instrument.HAT] = new Audio('/samples/set0/hi-hat.mp3');
   }
 
   ngOnDestroy() {
@@ -99,7 +106,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   stop() {
     this.beatQuarterSubscription.unsubscribe();
     this.unEnhanceBeat(this.playStatus);
-    this.metronomeClick.pause();
     this.playStatus.playing = false;
   }
 
@@ -144,11 +150,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   metronome(status: PlayStatus) {
     if (status.metronome && status.beat === this.project.configuration.beatsPerMeasure -1 && status.quarter === 0) {
-      this.metronomeClickMeasure.currentTime = 0;
-      this.metronomeClickMeasure.cloneNode(true).play();
+      this.audioElements.clickMeasure.currentTime = 0;
+      this.audioElements.clickMeasure.play();
     } else if (status.metronome && status.quarter === 0) {
-      this.metronomeClick.currentTime = 0;
-      this.metronomeClick.cloneNode(true).play();
+      this.audioElements.click.currentTime = 0;
+      this.audioElements.click.play();
     }
   }
 
@@ -162,9 +168,20 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const notes = this.project.rows[status.row].measures[status.measure].beats[status.beat].quarters[status.quarter].notes;
     if (notes && notes.length) {
       notes.forEach((note) => {
-        try {
-          this.instruments[note.instrument].cloneNode(true).play();
-        } catch (e) {}
+        switch (note.instrument) {
+          case Instrument.BASS:
+            this.audioElements.bass.currentTime = 0;
+            this.audioElements.bass.play();
+            break;
+          case Instrument.SNARE:
+            this.audioElements.snare.currentTime = 0;
+            this.audioElements.snare.play();
+            break;
+          case Instrument.HAT:
+            this.audioElements.hat.currentTime = 0;
+            this.audioElements.hat.play();
+            break;
+        }
       });
     }
   }
@@ -175,3 +192,4 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 }
+
