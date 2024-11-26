@@ -5,7 +5,10 @@ import {PlayerComponent} from './player/player.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PlayerComponent],
+  imports: [
+    RouterOutlet,
+    PlayerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass'
 })
