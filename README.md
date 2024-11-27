@@ -5,11 +5,8 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 
 ## TODO
 ### Short term todo
-- Move app/core models into app/store
 - Selectable list of instruments to show
-x Try using `this.Sounds["L_Explosion1"].cloneNode(true).play();` to play sounds that overlap (tried, but nothing changes).
 ### Next steps
-x Use Web Audio API (https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) instead of html5 audio (done)
 - Edit mode
   - Add empty row
   - Edit a measure
