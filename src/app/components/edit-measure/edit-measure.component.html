@@ -1,0 +1,25 @@
+<h3>Edit measure</h3>
+@if (projectConfiguration) {
+  <div class="measure">
+    <div class="inline">
+      @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
+        <div class="instrument">
+          {{ InstrumentService.getSymbol(instrument) }}
+        </div>
+      }
+    </div>
+    @for (beat of measure.beats; track beat) {
+      <div class="beat inline">
+        @for (quarter of beat.quarters; track quarter) {
+          <div class="quarter inline">
+            @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
+              <div class="instrument">
+                {{ instrument }}
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

@@ -11,18 +11,19 @@ import {Store} from '@ngrx/store';
 import {IProjectState} from '../store/project/project.reducer';
 import {ProjectActions} from '../store/project/project.actions';
 import {InstrumentsSet} from '../core/models/instruments-set.class';
+import {EditMeasureComponent} from '../components/edit-measure/edit-measure.component';
 
 @Component({
   selector: 'app-player',
   standalone: true,
   imports: [
+    EditMeasureComponent,
     TabViewerComponent,
     FormsModule,
     JsonExportComponent,
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;

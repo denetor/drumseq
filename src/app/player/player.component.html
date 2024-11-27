@@ -8,5 +8,7 @@
   <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
 </div>
 <app-tab-viewer></app-tab-viewer>
+<app-edit-measure></app-edit-measure>
+<hr>
 <app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>
 
