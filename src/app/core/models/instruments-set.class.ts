@@ -15,6 +15,9 @@ export class InstrumentsSet {
     this.instruments.push(new InstrumentInstance(Instrument.BASS, this.context, `/samples/${set}/kick.mp3`));
     this.instruments.push(new InstrumentInstance(Instrument.SNARE, this.context, `/samples/${set}/snare.mp3`));
     this.instruments.push(new InstrumentInstance(Instrument.HAT, this.context, `/samples/${set}/hi-hat.mp3`));
+    this.instruments.push(new InstrumentInstance(Instrument.HI_TOM, this.context, `/samples/${set}/tom-1.mp3`));
+    this.instruments.push(new InstrumentInstance(Instrument.MID_TOM, this.context, `/samples/${set}/tom-2.mp3`));
+    this.instruments.push(new InstrumentInstance(Instrument.FLOOR_TOM, this.context, `/samples/${set}/floor-tom.mp3`));
   }
 
   play(instrumentType: Instrument, accent: boolean = false) {

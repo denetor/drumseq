@@ -1,5 +1,5 @@
 export class ProjectConfiguration {
-  static DEFAULT_BPM = 120;
+  static DEFAULT_BPM = 100;
   static DEFAULT_MEASURES_PER_BAR = 4;
   static DEFAULT_BEATS_PER_MEASURE = 4;
 
