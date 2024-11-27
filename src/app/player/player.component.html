@@ -4,7 +4,8 @@
   <button (click)="play()">Start</button>
   <button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
-  <span (click)="toggleMetronome()">Metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span>
+  <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
+  <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
 </div>
 <app-tab-viewer></app-tab-viewer>
 <app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>

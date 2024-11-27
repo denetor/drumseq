@@ -163,10 +163,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.playStatus.metronome = !this.playStatus.metronome;
   }
 
+  toggleMusic() {
+    this.playStatus.music = !this.playStatus.music;
+  }
+
 
   playBeat(status: PlayStatus) {
     const notes = this.project.rows[status.row].measures[status.measure].beats[status.beat].quarters[status.quarter].notes;
-    if (notes && notes.length) {
+    if (notes && notes.length && status.music) {
       notes.forEach((note) => {
         switch (note.instrument) {
           case Instrument.BASS:
