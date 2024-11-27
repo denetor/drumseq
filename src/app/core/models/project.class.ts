@@ -127,7 +127,7 @@ export class Project {
   clone(): Project {
     const clonedProject = new Project();
     clonedProject.name = this.name;
-    clonedProject.configuration = { ...this.configuration };
+    clonedProject.configuration = this.configuration.clone();
     clonedProject.rows = this.rows.map(row => row.clone());
     return clonedProject;
   }

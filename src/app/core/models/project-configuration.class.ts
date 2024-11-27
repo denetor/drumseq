@@ -7,6 +7,14 @@ export class ProjectConfiguration {
   measuresPerBar: number;
   beatsPerMeasure: number;
 
+  clone(): ProjectConfiguration {
+    return new ProjectConfiguration(
+      this.bpm,
+      this.measuresPerBar,
+      this.beatsPerMeasure
+    );
+  }
+
   static getDefault(): ProjectConfiguration {
     return new ProjectConfiguration(
       ProjectConfiguration.DEFAULT_BPM,
