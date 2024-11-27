@@ -1,23 +1,20 @@
 import {Row} from './row.class';
 import {Note} from './note.class';
 import {Instrument} from './instrument.enum';
+import {ProjectConfiguration} from './project-configuration.class';
 
 export class Project {
   name: string;
-  configuration: any;
+  configuration: ProjectConfiguration;
   rows: Row[];
 
   constructor() {
     this.name = 'Untitled';
-    this.configuration = {
-      bpm: 90,
-      measuresPerBar: 4,
-      beatsPerMeasure: 4,
-    };
+    this.configuration = ProjectConfiguration.getDefault();
     // this.rows = [];
     this.rows = [
-      new Row(this.configuration.beatsPerMeasure, this.configuration.measuresPerBar),
-      new Row(this.configuration.beatsPerMeasure, this.configuration.measuresPerBar),
+      new Row(this.configuration.measuresPerBar, this.configuration.beatsPerMeasure),
+      new Row(this.configuration.measuresPerBar, this.configuration.beatsPerMeasure),
     ];
     this.rows[0].measures[0].beats[0].quarters[0].notes.push(new Note(Instrument.HAT));
     this.rows[0].measures[0].beats[0].quarters[0].notes.push(new Note(Instrument.BASS));
