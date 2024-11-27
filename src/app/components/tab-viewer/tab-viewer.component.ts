@@ -12,7 +12,12 @@ import {JsonPipe} from '@angular/common';
   template: `
     @if (project && project.rows) {
       @for(row of project.rows; track row; let i = $index) {
-        <app-tab-viewer-row [row]="row" [rowIndex]="i" id="row-{{i}}"></app-tab-viewer-row>
+        <app-tab-viewer-row
+          id="row-{{i}}"
+          [row]="row"
+          [rowIndex]="i"
+          [projectConfiguration]="project.configuration"
+        ></app-tab-viewer-row>
       }
     }
   `,
