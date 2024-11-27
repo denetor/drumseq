@@ -11,4 +11,6 @@ export enum Instrument {
   CRASH,
   RIDE,
   COW_BELL,
+  METRONOME,
+  METRONOME_HI,
 }

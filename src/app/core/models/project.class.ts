@@ -68,6 +68,7 @@ export class Project {
     this.rows[0].measures[3].beats[3].quarters[0].notes.push(new Note(Instrument.HAT));
     this.rows[0].measures[3].beats[3].quarters[0].notes.push(new Note(Instrument.SNARE));
     this.rows[0].measures[3].beats[3].quarters[2].notes.push(new Note(Instrument.HAT));
+    this.rows[0].measures[3].beats[3].quarters[2].notes.push(new Note(Instrument.SNARE));
     this.rows[0].measures[1].beats[1].quarters[2].notes.push(new Note(Instrument.HAT));
     this.rows[1].measures[0].beats[0].quarters[0].notes.push(new Note(Instrument.HAT));
     this.rows[1].measures[0].beats[0].quarters[0].notes.push(new Note(Instrument.BASS));
@@ -121,6 +122,7 @@ export class Project {
     this.rows[1].measures[3].beats[3].quarters[0].notes.push(new Note(Instrument.HAT));
     this.rows[1].measures[3].beats[3].quarters[0].notes.push(new Note(Instrument.SNARE));
     this.rows[1].measures[3].beats[3].quarters[2].notes.push(new Note(Instrument.HAT));
+    this.rows[1].measures[3].beats[3].quarters[2].notes.push(new Note(Instrument.SNARE));
   }
 
 
