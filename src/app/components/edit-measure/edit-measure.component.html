@@ -3,20 +3,37 @@
   <div class="measure">
     <div class="inline">
       @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
-        <div class="instrument">
+        <div class="cell">
           {{ InstrumentService.getSymbol(instrument) }}
         </div>
       }
+      <div class="cell"></div>
     </div>
-    @for (beat of measure.beats; track beat) {
-      <div class="beat inline">
+    @for (beat of measure.beats; track beat; let beatIndex = $index) {
+      <div class="beat inline" [ngClass]="{even: $even, odd: $odd}">
         @for (quarter of beat.quarters; track quarter) {
           <div class="quarter inline">
             @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
-              <div class="instrument">
-                {{ instrument }}
+              <div class="cell">
+                .
               </div>
             }
+            <div class="cell">
+              @switch ($index) {
+                @case (0) {
+                  <strong>{{ beatIndex + 1}}</strong>
+                }
+                @case (1) {
+                  e
+                }
+                @case (2) {
+                  &
+                }
+                @case (3) {
+                  a
+                }
+              }
+            </div>
           </div>
         }
       </div>

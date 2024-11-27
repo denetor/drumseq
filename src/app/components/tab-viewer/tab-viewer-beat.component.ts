@@ -18,6 +18,7 @@ import {IAppState} from '../../store/app-state.interface';
           id="row-{{rowIndex}}-measure-{{measureIndex}}-beat-{{beatIndex}}-quarter-{{i}}"
           [quarter]="quarter"
           [index]="beatIndex"
+          [tempoSymbol]="getTempoSymbol(i, beatIndex)"
           [projectConfiguration]="projectConfiguration"
         ></app-tab-viewer-quarter>
       }
@@ -76,6 +77,22 @@ export class TabViewerBeatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+
+  getTempoSymbol(index: number, beatIndex: number): string {
+    switch (index) {
+      case 0:
+        return '' + (beatIndex + 1) ;
+      case 1:
+        return 'e';
+      case 2:
+        return '&';
+      case 3:
+        return 'a';
+      default:
+        return '';
+    }
   }
 
 }

@@ -6,12 +6,17 @@ import {IAppState} from '../../store/app-state.interface';
 import {IProjectState} from '../../store/project/project.reducer';
 import {Measure} from '../../core/models/measure.class';
 import {InstrumentService} from '../../core/services/instrument.service';
+import {NgClass, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-edit-measure',
   templateUrl: './edit-measure.component.html',
   styleUrls: ['./edit-measure.component.sass'],
   standalone: true,
+  imports: [
+    NgClass,
+    NgIf
+  ]
 })
 export  class EditMeasureComponent implements OnInit, OnDestroy {
   private subscription: Subscription;

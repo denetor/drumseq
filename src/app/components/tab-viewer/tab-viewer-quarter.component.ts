@@ -18,7 +18,7 @@ import {IAppState} from '../../store/app-state.interface';
       <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.FLOOR_TOM)">{{ noteSymbol(Instrument.FLOOR_TOM) }}<br/></span>
       <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.SNARE)">{{ noteSymbol(Instrument.SNARE) }}<br/></span>
       <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.BASS)">{{ noteSymbol(Instrument.BASS) }}<br/></span>
-      {{ index + 1 }}
+      {{ tempoSymbol }}
     </div>
   `,
   standalone: true,
@@ -34,6 +34,7 @@ export class TabViewerQuarterComponent implements OnInit, OnDestroy {
   projectState$: Observable<IProjectState>;
   @Input() quarter: Quarter;
   @Input() index: number = 1;
+  @Input() tempoSymbol: string = '';
   @Input() projectConfiguration: ProjectConfiguration;
 
 
