@@ -4,17 +4,13 @@
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
 
 ## TODO
-### Short term todo
-- Selectable list of instruments to show
-### Next steps
-- Edit mode
-  - Add empty row
-  - Edit a measure
-  - Copy measure
-  - Copy row
-  - Move a row
-  - Move a measure
-  - Common measure clips library
+- Edit a measure
+- Add empty row
+- Copy measure
+- Copy row
+- Move a row
+- Move a measure
+- Common measure clips library
 
 ## Development server
 

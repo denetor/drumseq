@@ -56,7 +56,7 @@ export class ProjectConfiguration {
       o.measuresPerBar ?? ProjectConfiguration.DEFAULT_MEASURES_PER_BAR,
       o.beatsPerMeasure ?? ProjectConfiguration.DEFAULT_BEATS_PER_MEASURE
     );
-    c.visibleInstruments = [...o.visibleInstruments] ?? [];
+    c.visibleInstruments = [...(o.visibleInstruments ?? [])];
     return c;
   }
 
