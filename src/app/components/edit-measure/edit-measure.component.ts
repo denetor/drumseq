@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ProjectConfiguration} from '../../core/models/project-configuration.class';
 import {Observable, Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
@@ -7,6 +7,8 @@ import {IProjectState} from '../../store/project/project.reducer';
 import {Measure} from '../../core/models/measure.class';
 import {InstrumentService} from '../../core/services/instrument.service';
 import {NgClass, NgIf} from '@angular/common';
+import {Note} from '../../core/models/note.class';
+import {Instrument} from '../../core/models/instrument.enum';
 
 @Component({
   selector: 'app-edit-measure',
@@ -43,10 +45,41 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
         this.projectConfiguration = projectState.project.configuration;
       })
     );
+
+    // for test purposes
+    this.addNote(0,0, Instrument.HAT);
+    this.addNote(0,0, Instrument.SNARE);
+    this.addNote(0,2, Instrument.HAT);
+    this.addNote(1,0, Instrument.HAT);
+    this.addNote(1,0, Instrument.BASS);
+    this.addNote(1,2, Instrument.HAT);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+
+
+  hasNote(beatIndex: number, quarterIndex: number, instrument: Instrument): boolean {
+    return this.measure.beats[beatIndex].quarters[quarterIndex].notes.some(note => note.instrument === instrument);
+  }
+
+
+  addNote(beatIndex: number, quarterIndex: number, instrument: Instrument) {
+    this.measure.beats[beatIndex].quarters[quarterIndex].notes.push(new Note(instrument));
+  }
+
+
+  toggleNote(beatIndex: number, quarterIndex: number, instrument: Instrument) {
+    if (this.hasNote(beatIndex, quarterIndex, instrument)) {
+      this.measure.beats[beatIndex].quarters[quarterIndex].notes.splice(
+        this.measure.beats[beatIndex].quarters[quarterIndex].notes.findIndex(note => note.instrument === instrument),
+        1
+      );
+    } else {
+      this.addNote(beatIndex, quarterIndex, instrument);
+    }
   }
 
 

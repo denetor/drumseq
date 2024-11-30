@@ -1,6 +1,6 @@
 <h3>Edit measure</h3>
 @if (projectConfiguration) {
-  <div class="measure">
+  <div class="measure" #measureEditor>
     <div class="inline">
       @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
         <div class="cell">
@@ -11,10 +11,14 @@
     </div>
     @for (beat of measure.beats; track beat; let beatIndex = $index) {
       <div class="beat inline" [ngClass]="{even: $even, odd: $odd}">
-        @for (quarter of beat.quarters; track quarter) {
+        @for (quarter of beat.quarters; track quarter; let quarterIndex = $index) {
           <div class="quarter inline">
             @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
-              <div class="cell">
+              <div
+                class="cell"
+                [ngClass]="{selected: hasNote(beatIndex, quarterIndex, instrument)}"
+                (click)="toggleNote(beatIndex, quarterIndex, instrument)"
+              >
                 .
               </div>
             }
