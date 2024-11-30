@@ -66,6 +66,13 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
   }
 
 
+  getNote(beatIndex: number, quarterIndex: number, instrument: Instrument): Note {
+    return this.measure.beats[beatIndex].quarters[quarterIndex].notes[
+      this.measure.beats[beatIndex].quarters[quarterIndex].notes.findIndex(note => note.instrument === instrument)
+      ];
+  }
+
+
   addNote(beatIndex: number, quarterIndex: number, instrument: Instrument) {
     this.measure.beats[beatIndex].quarters[quarterIndex].notes.push(new Note(instrument));
   }

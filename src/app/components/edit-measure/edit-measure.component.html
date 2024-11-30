@@ -19,7 +19,11 @@
                 [ngClass]="{selected: hasNote(beatIndex, quarterIndex, instrument)}"
                 (click)="toggleNote(beatIndex, quarterIndex, instrument)"
               >
-                .
+                @if (hasNote(beatIndex, quarterIndex, instrument)) {
+                  {{getNote(beatIndex, quarterIndex, instrument).tabSymbol()}}
+                } @else {
+                  .
+                }
               </div>
             }
             <div class="cell">
