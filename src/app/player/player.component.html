@@ -10,7 +10,6 @@
 <app-tab-viewer
   (editMeasure)="editMeasure($event)"
 ></app-tab-viewer>
-<div>{{ editMeasureRequest | json }}</div>
 @if (editMeasureRequest) {
   <app-edit-measure
     [editMeasureRequest]="editMeasureRequest"

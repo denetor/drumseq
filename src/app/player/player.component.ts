@@ -247,6 +247,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   applyMeasureChanges(editMeasureResponse: IEditMeasureRequest) {
+    console.log('player.applyMeasureChanges()');
     console.log({editMeasureResponse});
     if (editMeasureResponse) {
       this.project.replaceMeasure(editMeasureResponse.rowIndex, editMeasureResponse.measureIndex, editMeasureResponse.measure);

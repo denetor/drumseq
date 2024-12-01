@@ -137,12 +137,20 @@ export class Project {
 
 
   replaceMeasure(rowIndex: number, measureIndex: number, measure: Measure): void {
-    console.log(`replaceMeasure(${rowIndex}, ${measureIndex})`);
+    console.log(`Project.replaceMeasure(${rowIndex}, ${measureIndex})`);
     console.log('existing measure:');
     console.log(this.rows[rowIndex].measures[measureIndex]);
     console.log('new measure:');
     console.log(measure);
-    this.rows[rowIndex].measures[measureIndex] = measure;
+    const newMeasures: Measure[] = [];
+    for (let i = 0; i < this.rows[rowIndex].measures.length; i++) {
+      if (i !== measureIndex) {
+        newMeasures.push(this.rows[rowIndex].measures[i]);
+      } else {
+        newMeasures.push(measure.clone());
+      }
+    }
+    this.rows[rowIndex].measures = newMeasures;
   }
 
 }

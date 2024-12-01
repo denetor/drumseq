@@ -101,7 +101,7 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
       this.save.emit({
         rowIndex: this.editMeasureRequest.rowIndex,
         measureIndex: this.editMeasureRequest.measureIndex,
-        measure: this.editMeasureRequest.measure,
+        measure: this.measure,
       });
     }
   }
