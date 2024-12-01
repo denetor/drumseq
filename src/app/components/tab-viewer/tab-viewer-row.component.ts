@@ -9,6 +9,7 @@ import {IProjectState} from '../../store/project/project.reducer';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
 import {Measure} from '../../core/models/measure.class';
+import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 
 @Component({
   selector: 'app-tab-viewer-row',
@@ -52,7 +53,7 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
   @Input() row: Row;
   @Input() rowIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
-  @Output() editMeasure = new EventEmitter<Measure>();
+  @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -78,8 +79,8 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
   }
 
 
-  emitEditMeasure(measure: Measure) {
-    this.editMeasure.emit(measure);
+  emitEditMeasure(request: IEditMeasureRequest) {
+    this.editMeasure.emit(request);
   }
 
 

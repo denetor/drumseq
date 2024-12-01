@@ -13,6 +13,8 @@ import {ProjectActions} from '../store/project/project.actions';
 import {InstrumentsSet} from '../core/models/instruments-set.class';
 import {EditMeasureComponent} from '../components/edit-measure/edit-measure.component';
 import {Measure} from '../core/models/measure.class';
+import {IEditMeasureRequest} from '../core/models/edit-measure-request.interface';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-player',
@@ -22,12 +24,12 @@ import {Measure} from '../core/models/measure.class';
     TabViewerComponent,
     FormsModule,
     JsonExportComponent,
+    JsonPipe,
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass',
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  protected readonly Measure = Measure;
   private subscription: Subscription;
   project: Project;
   projectState$: Observable<IProjectState>;
@@ -36,7 +38,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   playStatus: PlayStatus;
   audioContext: AudioContext;
   instruments: InstrumentsSet;
-  measureToEdit: Measure;
+  editMeasureRequest: IEditMeasureRequest | undefined;
 
 
   constructor(
@@ -51,14 +53,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.audioContext = new AudioContext();
     this.instruments = new InstrumentsSet(this.audioContext);
     this.instruments.load('set0');
-    this.measureToEdit = new Measure();
+    this.editMeasureRequest = undefined;
   }
+
 
   ngOnInit() {
     this.project = new Project();
-
-
-
     this.projectState$ = this.store.select('project');
     this.subscription.add(
       this.store.select('project').subscribe(projectState => {
@@ -67,6 +67,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     );
   }
 
+
   ngOnDestroy() {
     this.stop();
     this.subscription.unsubscribe();
@@ -74,7 +75,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  play() {
+  /**
+   * Starts the playback of the project if it is not already playing.
+   * This method initializes the beat interval and subscribes to a beat tracker that advances
+   * the playback state and performs associated actions such as updating the beat and metronome.
+   * @return {void}
+   */
+  play(): void {
     if (!this.playStatus.playing) {
       this.playStatus.setAtStart();
       this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
@@ -91,13 +98,28 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  stop() {
+  /**
+   * Stops the current playback by unsubscribing from the beat quarter subscription,
+   * unenchanting the current beat, and updating the play status to not playing.
+   *
+   * @return {void} No return value.
+   */
+  stop(): void {
     this.beatQuarterSubscription.unsubscribe();
     this.unEnhanceBeat(this.playStatus);
     this.playStatus.playing = false;
   }
 
 
+  /**
+   * Advances the musical tick within a project by incrementing the quarter, beat, measure, or row as necessary.
+   * Resets the counters when they exceed their defined limits in the project's configuration.
+   * Stops playback if the end of the available rows in the project is reached.
+   *
+   * @param {Project} project - The project containing configuration and rows data used to determine tick advancement.
+   * @param {PlayStatus} status - The current play status representing the current position in the project.
+   * @return {PlayStatus} The updated play status after advancing the tick.
+   */
   advanceTick(project: Project, status: PlayStatus): PlayStatus {
     status.quarter++;
     if (status.quarter >= 4) {
@@ -120,7 +142,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  enhanceBeat(status: PlayStatus) {
+  /**
+   * Enhances the visual appearance of a beat identified by the given PlayStatus.
+   *
+   * @param {PlayStatus} status - An object representing the current status of the play, containing row, measure, and beat properties.
+   * @return {void} Does not return a value.
+   */
+  enhanceBeat(status: PlayStatus): void {
     const beat = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat);
     if (beat) {
       beat.style.backgroundColor = '#ffffaa';
@@ -128,7 +156,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  unEnhanceBeat(status: PlayStatus) {
+  /**
+   * Reverts the visual enhancement on the specified beat element within a musical grid.
+   *
+   * @param {PlayStatus} status - The current play status containing information about the specific row, measure, and beat to un-enhance.
+   * @return {void} This method does not return a value.
+   */
+  unEnhanceBeat(status: PlayStatus): void {
     const beat = document.getElementById('row-' + status.row + '-measure-' + status.measure + '-beat-' + status.beat);
     if (beat) {
       beat.style.backgroundColor = '#ffffff';
@@ -136,7 +170,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  metronome(status: PlayStatus) {
+  /**
+   * Controls the metronome sound playback based on the current play status.
+   *
+   * @param {PlayStatus} status - The current status of the playback, including metronome on/off state and timing information.
+   * @return {void} Does not return a value.
+   */
+  metronome(status: PlayStatus): void {
     if (status.metronome && status.beat === this.project.configuration.beatsPerMeasure -1 && status.quarter === 0) {
       this.instruments.play(Instrument.METRONOME_HI, false);
     } else if (status.metronome && status.quarter === 0) {
@@ -145,16 +185,35 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  toggleMetronome() {
+  /**
+   * Toggles the state of the metronome between on and off.
+   */
+  toggleMetronome(): void {
     this.playStatus.metronome = !this.playStatus.metronome;
   }
 
-  toggleMusic() {
+
+  /**
+   * Toggles the music playback status.
+   *
+   * This method switches the current status of music playback between
+   * playing and paused. If the music is currently playing, it will
+   * pause the music. If the music is paused, it will start playing.
+   *
+   * @return {void}
+   */
+  toggleMusic(): void {
     this.playStatus.music = !this.playStatus.music;
   }
 
 
-  playBeat(status: PlayStatus) {
+  /**
+   * Plays the beat at the specified position in the music project if applicable.
+   *
+   * @param {PlayStatus} status - An object representing the current position in the music project, including row, measure, beat, and quarter, along with a flag indicating whether music should be played.
+   * @return {void} This method does not return a value. It performs an action of playing notes.
+   */
+  playBeat(status: PlayStatus): void {
     const notes = this.project.rows[status.row].measures[status.measure].beats[status.beat].quarters[status.quarter].notes;
     if (notes && notes.length && status.music) {
       notes.forEach((note) => {
@@ -164,15 +223,36 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  importProject(project: Project) {
+  /**
+   * Imports a project into the current store by dispatching an import action.
+   *
+   * @param {Project} project - The project to be imported.
+   * @return {void}
+   */
+  importProject(project: Project): void {
     this.store.dispatch(ProjectActions.import({project: project}));
   }
 
 
-  editMeasure(measure: Measure) {
-    console.log('Edit measure:');
-    console.log({measure});
-    this.measureToEdit = measure.clone();
+
+  /**
+   * Updates the current measurement using the given request.
+   *
+   * @param {IEditMeasureRequest} request - The request object containing the new measurement details that need to be applied.
+   * @return {void} This function does not return a value.
+   */
+  editMeasure(request: IEditMeasureRequest): void {
+    this.editMeasureRequest = request;
+  }
+
+
+  applyMeasureChanges(editMeasureResponse: IEditMeasureRequest) {
+    console.log({editMeasureResponse});
+    if (editMeasureResponse) {
+      this.project.replaceMeasure(editMeasureResponse.rowIndex, editMeasureResponse.measureIndex, editMeasureResponse.measure);
+    }
+    // empty request to hide the window
+    this.editMeasureRequest = undefined;
   }
 
 

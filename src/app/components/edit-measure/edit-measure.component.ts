@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ProjectConfiguration} from '../../core/models/project-configuration.class';
 import {Observable, Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
@@ -9,6 +9,7 @@ import {InstrumentService} from '../../core/services/instrument.service';
 import {NgClass, NgIf} from '@angular/common';
 import {Note} from '../../core/models/note.class';
 import {Instrument} from '../../core/models/instrument.enum';
+import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 
 @Component({
   selector: 'app-edit-measure',
@@ -25,7 +26,9 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
   private projectState$: Observable<IProjectState>;
   protected readonly InstrumentService = InstrumentService;
   projectConfiguration: ProjectConfiguration;
-  @Input() measure: Measure;
+  protected measure: Measure;
+  @Input() editMeasureRequest: IEditMeasureRequest | undefined;
+  @Output() save: EventEmitter<IEditMeasureRequest> = new EventEmitter();
 
 
   constructor(
@@ -35,6 +38,7 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
     this.projectState$ = new Observable();
     this.subscription = new Subscription();
     this.measure = new Measure();
+    this.editMeasureRequest = undefined;
   }
 
 
@@ -45,6 +49,8 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
         this.projectConfiguration = projectState.project.configuration;
       })
     );
+
+    this.measure = this.editMeasureRequest?.measure?.clone() ?? new Measure();
 
     // for test purposes
     // this.addNote(0,0, Instrument.HAT);
@@ -87,6 +93,21 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
     } else {
       this.addNote(beatIndex, quarterIndex, instrument);
     }
+  }
+
+
+  applyChanges(): void {
+    if (this.editMeasureRequest) {
+      this.save.emit({
+        rowIndex: this.editMeasureRequest.rowIndex,
+        measureIndex: this.editMeasureRequest.measureIndex,
+        measure: this.editMeasureRequest.measure,
+      });
+    }
+  }
+
+  cancel(): void {
+    this.save.emit(undefined);
   }
 
 

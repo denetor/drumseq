@@ -2,6 +2,7 @@ import {Row} from './row.class';
 import {Note} from './note.class';
 import {Instrument} from './instrument.enum';
 import {ProjectConfiguration} from './project-configuration.class';
+import {Measure} from './measure.class';
 
 export class Project {
   name: string;
@@ -132,6 +133,16 @@ export class Project {
     clonedProject.configuration = this.configuration.clone();
     clonedProject.rows = this.rows.map(row => row.clone());
     return clonedProject;
+  }
+
+
+  replaceMeasure(rowIndex: number, measureIndex: number, measure: Measure): void {
+    console.log(`replaceMeasure(${rowIndex}, ${measureIndex})`);
+    console.log('existing measure:');
+    console.log(this.rows[rowIndex].measures[measureIndex]);
+    console.log('new measure:');
+    console.log(measure);
+    this.rows[rowIndex].measures[measureIndex] = measure;
   }
 
 }

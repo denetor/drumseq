@@ -1,4 +1,5 @@
 <h3>Edit measure</h3>
+<div>Row: {{ editMeasureRequest?.rowIndex }} - Measure: {{ editMeasureRequest?.measureIndex}}</div>
 @if (projectConfiguration) {
   <div class="measure" #measureEditor>
     <div class="inline">
@@ -46,5 +47,9 @@
         }
       </div>
     }
+  </div>
+  <div>
+    <button (click)="applyChanges()">Apply</button>
+    <button (click)="cancel()">Cancel</button>
   </div>
 }

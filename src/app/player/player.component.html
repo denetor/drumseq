@@ -10,9 +10,13 @@
 <app-tab-viewer
   (editMeasure)="editMeasure($event)"
 ></app-tab-viewer>
-<app-edit-measure
-  [measure]="measureToEdit"
-></app-edit-measure>
+<div>{{ editMeasureRequest | json }}</div>
+@if (editMeasureRequest) {
+  <app-edit-measure
+    [editMeasureRequest]="editMeasureRequest"
+    (save)="applyMeasureChanges($event)"
+  ></app-edit-measure>
+}
 <hr>
 <app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>
 

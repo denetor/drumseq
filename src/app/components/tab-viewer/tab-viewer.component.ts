@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
 import {JsonPipe} from '@angular/common';
 import {Measure} from '../../core/models/measure.class';
+import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -35,7 +36,7 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   project: Project | undefined;
   projectState$: Observable<IProjectState>;
-  @Output() editMeasure = new EventEmitter<Measure>();
+  @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
 
 
   constructor(
@@ -62,8 +63,8 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   }
 
 
-  emitEditMeasure(measure: Measure) {
-    this.editMeasure.emit(measure);
+  emitEditMeasure(request: IEditMeasureRequest) {
+    this.editMeasure.emit(request);
   }
 
 }

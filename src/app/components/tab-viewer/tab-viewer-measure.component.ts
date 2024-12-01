@@ -8,6 +8,7 @@ import {Observable, Subscription} from 'rxjs';
 import {IProjectState} from '../../store/project/project.reducer';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
+import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 
 @Component({
   selector: 'app-tab-viewer-measure',
@@ -35,7 +36,7 @@ import {IAppState} from '../../store/app-state.interface';
       </div>
     </div>
     <div>
-      <button (click)="emitEdit(measure)">Edit</button>
+      <button (click)="emitEdit()">Edit</button>
     </div>
   `,
   standalone: true,
@@ -54,7 +55,7 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
   @Input() rowIndex: number;
   @Input() measureIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
-  @Output() edit = new EventEmitter<Measure>();
+  @Output() edit = new EventEmitter<IEditMeasureRequest>();
 
 
   constructor(
@@ -84,8 +85,12 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
   }
 
 
-  emitEdit(measure: Measure) {
-    this.edit.emit(measure);
+  emitEdit() {
+    this.edit.emit({
+      rowIndex: this.rowIndex,
+      measureIndex: this.measureIndex,
+      measure: this.measure,
+    });
   }
 
 }
