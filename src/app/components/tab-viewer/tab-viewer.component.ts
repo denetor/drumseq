@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Project} from '../../core/models/project.class';
 import {TabViewerRowComponent} from './tab-viewer-row.component';
 import {Observable, of, Subscription} from 'rxjs';
@@ -6,6 +6,7 @@ import {IProjectState} from '../../store/project/project.reducer';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
 import {JsonPipe} from '@angular/common';
+import {Measure} from '../../core/models/measure.class';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -17,6 +18,7 @@ import {JsonPipe} from '@angular/common';
           [row]="row"
           [rowIndex]="i"
           [projectConfiguration]="project.configuration"
+          (editMeasure)="emitEditMeasure($event)"
         ></app-tab-viewer-row>
       }
     }
@@ -33,6 +35,8 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   project: Project | undefined;
   projectState$: Observable<IProjectState>;
+  @Output() editMeasure = new EventEmitter<Measure>();
+
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -41,6 +45,7 @@ export class TabViewerComponent implements OnInit, OnDestroy {
     this.projectState$ = new Observable();
     this.subscription = new Subscription();
   }
+
 
   ngOnInit() {
     this.projectState$ = this.store.select('project');
@@ -51,8 +56,14 @@ export class TabViewerComponent implements OnInit, OnDestroy {
     );
   }
 
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+
+  emitEditMeasure(measure: Measure) {
+    this.editMeasure.emit(measure);
   }
 
 }

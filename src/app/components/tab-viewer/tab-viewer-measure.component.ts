@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Measure} from '../../core/models/measure.class';
 import {TabViewerBeatComponent} from './tab-viewer-beat.component';
 import {ProjectConfiguration} from '../../core/models/project-configuration.class';
@@ -12,25 +12,30 @@ import {IAppState} from '../../store/app-state.interface';
 @Component({
   selector: 'app-tab-viewer-measure',
   template: `
-    @for(beat of measure.beats; track beat; let i = $index) {
-      <app-tab-viewer-beat
-        class="inline"
-        id="row-{{rowIndex}}-measure-{{measureIndex}}-beat-{{i}}"
-        [beat]="beat"
-        [rowIndex]="rowIndex"
-        [measureIndex]="measureIndex"
-        [beatIndex]="i"
-        [projectConfiguration]="projectConfiguration"
-      ></app-tab-viewer-beat>
-    }
-    <div class="inline">
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.HAT)">|<br/></span>
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.HI_TOM)">|<br/></span>
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.MID_TOM)">|<br/></span>
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.FLOOR_TOM)">|<br/></span>
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.SNARE)">|<br/></span>
-      <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.BASS)">|<br/></span>
-      |
+    <div>
+      @for(beat of measure.beats; track beat; let i = $index) {
+        <app-tab-viewer-beat
+          class="inline"
+          id="row-{{rowIndex}}-measure-{{measureIndex}}-beat-{{i}}"
+          [beat]="beat"
+          [rowIndex]="rowIndex"
+          [measureIndex]="measureIndex"
+          [beatIndex]="i"
+          [projectConfiguration]="projectConfiguration"
+        ></app-tab-viewer-beat>
+      }
+      <div class="inline">
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.HAT)">|<br/></span>
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.HI_TOM)">|<br/></span>
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.MID_TOM)">|<br/></span>
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.FLOOR_TOM)">|<br/></span>
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.SNARE)">|<br/></span>
+        <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.BASS)">|<br/></span>
+        |
+      </div>
+    </div>
+    <div>
+      <button (click)="emitEdit(measure)">Edit</button>
     </div>
   `,
   standalone: true,
@@ -49,6 +54,7 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
   @Input() rowIndex: number;
   @Input() measureIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
+  @Output() edit = new EventEmitter<Measure>();
 
 
   constructor(
@@ -75,6 +81,11 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+
+  emitEdit(measure: Measure) {
+    this.edit.emit(measure);
   }
 
 }

@@ -7,8 +7,12 @@
   <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
   <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
 </div>
-<app-tab-viewer></app-tab-viewer>
-<app-edit-measure></app-edit-measure>
+<app-tab-viewer
+  (editMeasure)="editMeasure($event)"
+></app-tab-viewer>
+<app-edit-measure
+  [measure]="measureToEdit"
+></app-edit-measure>
 <hr>
 <app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>
 

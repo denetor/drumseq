@@ -12,6 +12,7 @@ import {IProjectState} from '../store/project/project.reducer';
 import {ProjectActions} from '../store/project/project.actions';
 import {InstrumentsSet} from '../core/models/instruments-set.class';
 import {EditMeasureComponent} from '../components/edit-measure/edit-measure.component';
+import {Measure} from '../core/models/measure.class';
 
 @Component({
   selector: 'app-player',
@@ -26,6 +27,7 @@ import {EditMeasureComponent} from '../components/edit-measure/edit-measure.comp
   styleUrl: './player.component.sass',
 })
 export class PlayerComponent implements OnInit, OnDestroy {
+  protected readonly Measure = Measure;
   private subscription: Subscription;
   project: Project;
   projectState$: Observable<IProjectState>;
@@ -34,6 +36,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   playStatus: PlayStatus;
   audioContext: AudioContext;
   instruments: InstrumentsSet;
+  measureToEdit: Measure;
 
 
   constructor(
@@ -48,6 +51,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.audioContext = new AudioContext();
     this.instruments = new InstrumentsSet(this.audioContext);
     this.instruments.load('set0');
+    this.measureToEdit = new Measure();
   }
 
   ngOnInit() {
@@ -163,6 +167,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   importProject(project: Project) {
     this.store.dispatch(ProjectActions.import({project: project}));
   }
+
+
+  editMeasure(measure: Measure) {
+    console.log('Edit measure:');
+    console.log({measure});
+    this.measureToEdit = measure.clone();
+  }
+
 
 }
 

@@ -24,8 +24,8 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private projectState$: Observable<IProjectState>;
   protected readonly InstrumentService = InstrumentService;
-  @Input() projectConfiguration: ProjectConfiguration;
-  measure: Measure;
+  projectConfiguration: ProjectConfiguration;
+  @Input() measure: Measure;
 
 
   constructor(
@@ -47,12 +47,12 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
     );
 
     // for test purposes
-    this.addNote(0,0, Instrument.HAT);
-    this.addNote(0,0, Instrument.SNARE);
-    this.addNote(0,2, Instrument.HAT);
-    this.addNote(1,0, Instrument.HAT);
-    this.addNote(1,0, Instrument.BASS);
-    this.addNote(1,2, Instrument.HAT);
+    // this.addNote(0,0, Instrument.HAT);
+    // this.addNote(0,0, Instrument.SNARE);
+    // this.addNote(0,2, Instrument.HAT);
+    // this.addNote(1,0, Instrument.HAT);
+    // this.addNote(1,0, Instrument.BASS);
+    // this.addNote(1,2, Instrument.HAT);
   }
 
   ngOnDestroy() {
