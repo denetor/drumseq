@@ -4,11 +4,10 @@
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
 
 ## TODO
-- Empty an existing measure
 - Cycle play a measure in editor
+- Fix bpm input
 - Copy measure
 - Copy row
-- Move a row
 - Common measure clips library
 
 ## Development server
