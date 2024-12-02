@@ -35,6 +35,9 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
           (edit)="emitEditMeasure($event)"
         ></app-tab-viewer-measure>
       }
+      <div class="inline">
+        <button (click)="emitDeleteRow(rowIndex)">Delete bar</button>
+      </div>
     </div>
   `,
   standalone: true,
@@ -54,6 +57,7 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
   @Input() rowIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
+  @Output() deleteRow = new EventEmitter<number>();
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -81,6 +85,11 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
 
   emitEditMeasure(request: IEditMeasureRequest) {
     this.editMeasure.emit(request);
+  }
+
+
+  emitDeleteRow(rowIndex: number): void {
+    this.deleteRow.emit(rowIndex);
   }
 
 

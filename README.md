@@ -5,8 +5,7 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 
 ## TODO
 - Empty an existing measure
-- Empty an existing row
-- Add empty row
+- Cycle play a measure in editor
 - Copy measure
 - Copy row
 - Move a row

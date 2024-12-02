@@ -20,6 +20,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
           [rowIndex]="i"
           [projectConfiguration]="project.configuration"
           (editMeasure)="emitEditMeasure($event)"
+          (deleteRow)="emitDeleteRow($event)"
         ></app-tab-viewer-row>
       }
     }
@@ -41,6 +42,7 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   projectState$: Observable<IProjectState>;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
   @Output() addRow = new EventEmitter();
+  @Output() deleteRow = new EventEmitter<number>();
 
 
   constructor(
@@ -76,6 +78,11 @@ export class TabViewerComponent implements OnInit, OnDestroy {
 
   emitAddRow() {
     this.addRow.emit();
+  }
+
+
+  emitDeleteRow(rowIndex: number) {
+      this.deleteRow.emit(rowIndex);
   }
 
 }

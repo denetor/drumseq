@@ -15,6 +15,7 @@ import {EditMeasureComponent} from '../components/edit-measure/edit-measure.comp
 import {Measure} from '../core/models/measure.class';
 import {IEditMeasureRequest} from '../core/models/edit-measure-request.interface';
 import {JsonPipe} from '@angular/common';
+import {Row} from '../core/models/row.class';
 
 @Component({
   selector: 'app-player',
@@ -275,6 +276,17 @@ export class PlayerComponent implements OnInit, OnDestroy {
    */
   addEmptyRow(): void {
     this.store.dispatch(ProjectActions.addEmptyRow({measuresPerBar: this.project.configuration.measuresPerBar, beatsPerMeasure: this.project.configuration.beatsPerMeasure}));
+  }
+
+
+  deleteRow(rowIndex: number): void {
+    const newRows: Row[] = [];
+    for (let i=0; i<this.project.rows.length; i++) {
+      if (i !== rowIndex) {
+        newRows.push(this.project.rows[i].clone());
+      }
+    }
+    this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
   }
 
 
