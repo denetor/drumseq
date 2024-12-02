@@ -15,11 +15,17 @@ export const projectReducer = createReducer(
   initialState,
 
 
+  /**
+   * Import the project data from a given json object
+   */
   on(ProjectActions['import'], (state: IProjectState, action) => {
     return {project: ProjectService.fromObject(action.project)};
   }),
 
 
+  /**
+   * Update the name property of the project
+   */
   on(ProjectActions['updateName'], (state: IProjectState, action) => {
     const newProject = state.project.clone();
     newProject.name = action.name;
@@ -27,6 +33,9 @@ export const projectReducer = createReducer(
   }),
 
 
+  /**
+   * Replace the rows of a project with the given ones
+   */
   on(ProjectActions['updateRows'], (state: IProjectState, action) => {
     const newProject = state.project.clone();
     newProject.rows = [];

@@ -4,12 +4,12 @@
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
 
 ## TODO
-- Edit a measure
+- Empty an existing measure
+- Empty an existing row
 - Add empty row
 - Copy measure
 - Copy row
 - Move a row
-- Move a measure
 - Common measure clips library
 
 ## Development server

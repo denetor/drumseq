@@ -236,7 +236,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Updates the current measurement using the given request.
+   * Open the measure editor
    *
    * @param {IEditMeasureRequest} request - The request object containing the new measurement details that need to be applied.
    * @return {void} This function does not return a value.
@@ -246,9 +246,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Applies measure changes based on the given editMeasureResponse.
+   *
+   * @param {IEditMeasureRequest} editMeasureResponse - The response containing information about the measure changes,
+   *                                                    including rowIndex, measureIndex, and the new measure data.
+   * @return {void} This method does not return a value. It dispatches the updated rows to the store and clears the current edit request.
+   */
   applyMeasureChanges(editMeasureResponse: IEditMeasureRequest) {
-    console.log('player.applyMeasureChanges()');
-    console.log({editMeasureResponse});
     if (editMeasureResponse) {
       this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
           editMeasureResponse.rowIndex,
