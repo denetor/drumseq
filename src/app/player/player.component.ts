@@ -253,7 +253,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
    *                                                    including rowIndex, measureIndex, and the new measure data.
    * @return {void} This method does not return a value. It dispatches the updated rows to the store and clears the current edit request.
    */
-  applyMeasureChanges(editMeasureResponse: IEditMeasureRequest) {
+  applyMeasureChanges(editMeasureResponse: IEditMeasureRequest): void {
     if (editMeasureResponse) {
       this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
           editMeasureResponse.rowIndex,
@@ -263,6 +263,18 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
     // empty request to hide the window
     this.editMeasureRequest = undefined;
+  }
+
+
+  /**
+   * Dispatches an action to add an empty row to the project.
+   * The new row is configured based on the current project's settings,
+   * specifically the number of measures per bar and beats per measure.
+   *
+   * @return {void} Does not return a value.
+   */
+  addEmptyRow(): void {
+    this.store.dispatch(ProjectActions.addEmptyRow({measuresPerBar: this.project.configuration.measuresPerBar, beatsPerMeasure: this.project.configuration.beatsPerMeasure}));
   }
 
 

@@ -2,6 +2,7 @@ import {Project} from '../../core/models/project.class';
 import {ProjectActions} from './project.actions';
 import {createReducer, on} from '@ngrx/store';
 import {ProjectService} from './project.service';
+import {Row} from '../../core/models/row.class';
 
 export interface IProjectState {
   project: Project;
@@ -29,6 +30,16 @@ export const projectReducer = createReducer(
   on(ProjectActions['updateName'], (state: IProjectState, action) => {
     const newProject = state.project.clone();
     newProject.name = action.name;
+    return {project: newProject};
+  }),
+
+
+  /**
+   * Append an empty row at the end of the project
+   */
+  on(ProjectActions['addEmptyRow'], (state: IProjectState, action) => {
+    const newProject = state.project.clone();
+    newProject.rows.push(new Row(action.measuresPerBar, action.beatsPerMeasure));
     return {project: newProject};
   }),
 

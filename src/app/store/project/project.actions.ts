@@ -7,6 +7,7 @@ export const ProjectActions = createActionGroup({
   events: {
     'import': props<{project: Project}>(),
     'updateName': props<{name: string}>(),
+    'addEmptyRow': props<{measuresPerBar: number, beatsPerMeasure: number}>(),
     'updateRows': props<{rows: Row[]}>(),
   }
 });

@@ -23,6 +23,9 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
         ></app-tab-viewer-row>
       }
     }
+    <div>
+      <button (click)="emitAddRow()">Add row</button>
+    </div>
   `,
   standalone: true,
   imports: [
@@ -37,6 +40,7 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   project: Project | undefined;
   projectState$: Observable<IProjectState>;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
+  @Output() addRow = new EventEmitter();
 
 
   constructor(
@@ -58,13 +62,20 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   }
 
 
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
 
+
   emitEditMeasure(request: IEditMeasureRequest) {
     this.editMeasure.emit(request);
+  }
+
+
+  emitAddRow() {
+    this.addRow.emit();
   }
 
 }
