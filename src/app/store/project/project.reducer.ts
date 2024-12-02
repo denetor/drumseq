@@ -14,14 +14,25 @@ export const initialState: IProjectState = {
 export const projectReducer = createReducer(
   initialState,
 
+
   on(ProjectActions['import'], (state: IProjectState, action) => {
-    console.log({importActionProps: action});
     return {project: ProjectService.fromObject(action.project)};
   }),
+
 
   on(ProjectActions['updateName'], (state: IProjectState, action) => {
     const newProject = state.project.clone();
     newProject.name = action.name;
+    return {project: newProject};
+  }),
+
+
+  on(ProjectActions['updateRows'], (state: IProjectState, action) => {
+    const newProject = state.project.clone();
+    newProject.rows = [];
+    for (const row of action.rows) {
+      newProject.rows.push(row.clone());
+    }
     return {project: newProject};
   }),
 

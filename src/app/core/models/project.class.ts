@@ -127,6 +127,12 @@ export class Project {
   }
 
 
+  /**
+   * Creates a deep copy of the current Project instance.
+   * The cloning process involves making copies of the name, configuration, and rows properties to ensure that changes to the cloned instance do not affect the original instance.
+   *
+   * @return {Project} A new Project instance that is a deep clone of the current instance.
+   */
   clone(): Project {
     const clonedProject = new Project();
     clonedProject.name = this.name;
@@ -136,21 +142,33 @@ export class Project {
   }
 
 
-  replaceMeasure(rowIndex: number, measureIndex: number, measure: Measure): void {
-    console.log(`Project.replaceMeasure(${rowIndex}, ${measureIndex})`);
-    console.log('existing measure:');
-    console.log(this.rows[rowIndex].measures[measureIndex]);
-    console.log('new measure:');
-    console.log(measure);
-    const newMeasures: Measure[] = [];
-    for (let i = 0; i < this.rows[rowIndex].measures.length; i++) {
-      if (i !== measureIndex) {
-        newMeasures.push(this.rows[rowIndex].measures[i]);
+  /**
+   * Replaces a measure in a specific row with a new measure and returns the copy of the updated list of rows.
+   *
+   * @param {number} rowIndex - The index of the row where the measure should be replaced.
+   * @param {number} measureIndex - The index of the measure within the specified row to be replaced.
+   * @param {Measure} measure - The new measure to be inserted into the specified row and measure position.
+   * @return {Row[]} An array of rows with the specified measure replaced at the given row and measure indices.
+   */
+  getRowsWithReplacedMeasure(rowIndex: number, measureIndex: number, measure: Measure): Row[] {
+    const newRows = [];
+    for (let i = 0; i < this.rows.length; i++) {
+      if (i !== rowIndex) {
+        newRows.push(this.rows[i]);
       } else {
-        newMeasures.push(measure.clone());
+        const newRow = new Row();
+        newRow.measures = [];
+        for (let j = 0; j < this.rows[rowIndex].measures.length; j++) {
+          if (j !== measureIndex) {
+            newRow.measures.push(this.rows[rowIndex].measures[j]);
+          } else {
+            newRow.measures.push(measure.clone());
+          }
+        }
+        newRows.push(newRow);
       }
     }
-    this.rows[rowIndex].measures = newMeasures;
+    return newRows;
   }
 
 }

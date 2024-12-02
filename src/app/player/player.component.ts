@@ -250,7 +250,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
     console.log('player.applyMeasureChanges()');
     console.log({editMeasureResponse});
     if (editMeasureResponse) {
-      this.project.replaceMeasure(editMeasureResponse.rowIndex, editMeasureResponse.measureIndex, editMeasureResponse.measure);
+      this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
+          editMeasureResponse.rowIndex,
+          editMeasureResponse.measureIndex,
+          editMeasureResponse.measure,
+        )}));
     }
     // empty request to hide the window
     this.editMeasureRequest = undefined;
