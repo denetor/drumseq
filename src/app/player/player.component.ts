@@ -16,6 +16,7 @@ import {IEditMeasureRequest} from '../core/models/edit-measure-request.interface
 import {Row} from '../core/models/row.class';
 import {PlayStatusMode} from '../core/models/play-status-mode.enum';
 import {Measure} from '../core/models/measure.class';
+import {Quarter} from '../core/models/quarter.class';
 
 @Component({
   selector: 'app-player',
@@ -36,6 +37,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   projectState$: Observable<IProjectState>;
   beatQuarter$: Observable<number>;
   beatQuarterSubscription: Subscription;
+  playMeasureQuarter$: Observable<number>;
+  playMeasureQuarterSubscription: Subscription;
   playStatus: PlayStatus;
   audioContext: AudioContext;
   instruments: InstrumentsSet;
@@ -50,6 +53,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
     this.beatQuarter$ = new Observable();
     this.beatQuarterSubscription = new Subscription();
+    this.playMeasureQuarter$ = new Observable();
+    this.playMeasureQuarterSubscription = new Subscription();
     this.playStatus = new PlayStatus();
     this.audioContext = new AudioContext();
     this.instruments = new InstrumentsSet(this.audioContext);
@@ -141,13 +146,30 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   playMeasureLoop(measure: Measure): void {
-    // TODO create linear array of intervals of the given measure
-    // TODO create subscriber of those ticks only
-    // TODO subscribe and play current tick
+    // create linear array of  quarters of the given measure
+    const quarters: Quarter[] = [];
+    for (const beat of measure.beats) {
+      for (const quarter of beat.quarters) {
+        quarters.push(quarter);
+      }
+    }
+    // create subscriber of those ticks only
+    this.playMeasureQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
+    this.playMeasureQuarterSubscription = this.playMeasureQuarter$.subscribe(
+      (quarterIndex) => {
+        const notes = quarters[quarterIndex % quarters.length].notes;
+        if (notes && notes.length) {
+          notes.forEach((note) => {
+            this.instruments.play(note.instrument, note.accent);
+          });
+        }
+      }
+    )
   }
 
   stopMeasureLoop() {
     // TODO unsubscribe measure loop subscriber
+    this.playMeasureQuarterSubscription.unsubscribe();
   }
 
 
@@ -320,16 +342,23 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Handles the event triggered for playing a specific measure of a specific row.
-   * This function takes the event containing the row index and measure index and executes playMeasure with those indices.
+   * This method will initiate the playback loop for the given measure.
    *
-   * @param {Object} playMeasureEvent - The event object containing the indices information.
-   * @param {number} playMeasureEvent.rowIndex - The index of the row in the musical piece where the measure exists.
-   * @param {number} playMeasureEvent.measureIndex - The index of the measure within the specified row to be played.
-   * @return {void} This function does not return any value.
+   * @param {Measure} measure - The measure to be played in the sequence.
+   * @return {void} No return value.
    */
-  handlePlayMeasureEvent(playMeasureEvent: {rowIndex: number, measureIndex: number}): void {
-    this.playMeasure(playMeasureEvent.rowIndex, playMeasureEvent.measureIndex);
+  handlePlayMeasureEvent(measure: Measure): void {
+    this.playMeasureLoop(measure);
+  }
+
+
+  /**
+   * Handles the event to stop loop play of a measure
+   *
+   * @return {void} This function does not return a value.
+   */
+  handleStopMeasureEvent(): void {
+    this.stopMeasureLoop();
   }
 
 
