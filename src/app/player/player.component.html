@@ -1,7 +1,7 @@
 <p>{{ project.name }}</p>
 <div>
   BPM: <input type="number" [disabled]="true" [(ngModel)]="project.configuration.bpm"> -
-  <button (click)="play()">Start</button>
+  <button (click)="playProject()">Play</button>
   <button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
   <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
@@ -11,11 +11,13 @@
   (editMeasure)="editMeasure($event)"
   (addRow)="addEmptyRow()"
   (deleteRow)="deleteRow($event)"
+  (playRow)="playRow($event)"
 ></app-tab-viewer>
 @if (editMeasureRequest) {
   <app-edit-measure
     [editMeasureRequest]="editMeasureRequest"
     (save)="applyMeasureChanges($event)"
+    (play)="handlePlayMeasureEvent($event)"
   ></app-edit-measure>
 }
 <hr>
