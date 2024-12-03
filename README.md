@@ -4,7 +4,6 @@
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
 
 ## TODO
-- Cycle play a measure in editor
 - Fix bpm input
 - Copy measure
 - Copy row
