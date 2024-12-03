@@ -22,7 +22,8 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
         <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.FLOOR_TOM)">FT |<br/></span>
         <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.SNARE)">SD |<br/></span>
         <span *ngIf="projectConfiguration && projectConfiguration.isVisibleInstrument(Instrument.BASS)">BD |<br/></span>
-        __ |
+        __ |<br/>
+        __ |<br/>
       </div>
       @for(measure of row.measures; track measure; let i = $index) {
         <app-tab-viewer-measure
@@ -37,6 +38,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
       }
       <div class="inline">
         <button (click)="emitDeleteRow(rowIndex)">Delete bar</button>
+        <button (click)="emitPlayRow(rowIndex)">Loop play this bar</button>
       </div>
     </div>
   `,
@@ -58,6 +60,7 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
   @Input() projectConfiguration: ProjectConfiguration;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
   @Output() deleteRow = new EventEmitter<number>();
+  @Output() playRow = new EventEmitter<number>();
 
   constructor(
     private readonly store: Store<IAppState>,
@@ -90,6 +93,11 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
 
   emitDeleteRow(rowIndex: number): void {
     this.deleteRow.emit(rowIndex);
+  }
+
+
+  emitPlayRow(rowIndex: number): void {
+    this.playRow.emit(rowIndex);
   }
 
 

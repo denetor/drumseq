@@ -21,6 +21,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
           [projectConfiguration]="project.configuration"
           (editMeasure)="emitEditMeasure($event)"
           (deleteRow)="emitDeleteRow($event)"
+          (playRow)="emitPlayRow($event)"
         ></app-tab-viewer-row>
       }
     }
@@ -31,9 +32,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
   standalone: true,
   imports: [
     TabViewerRowComponent,
-    JsonPipe,
   ],
-  // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']
 })
 export class TabViewerComponent implements OnInit, OnDestroy {
@@ -43,6 +42,7 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
   @Output() addRow = new EventEmitter();
   @Output() deleteRow = new EventEmitter<number>();
+  @Output() playRow = new EventEmitter<number>();
 
 
   constructor(
@@ -84,5 +84,11 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   emitDeleteRow(rowIndex: number) {
       this.deleteRow.emit(rowIndex);
   }
+
+
+  emitPlayRow(rowIndex: number) {
+    this.playRow.emit(rowIndex);
+  }
+
 
 }

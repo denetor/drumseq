@@ -101,13 +101,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   /**
    * Executes playback for a single row in loop mode.
-   * The playRow method initiates playback of audio or music data specifically for a single row, configured
-   * to repeat continuously in a loop. This can be useful for loops, phrases, or segments that need repeated
-   * playback without advancing to subsequent rows or sections.
+   * Sets the play status to loop the specified row and initiates playback.
    *
+   * @param {number} rowIndex - The index of the row to be played in loop mode.
    * @return {void} This method does not return a value.
    */
-  playRow(): void {
+  playRow(rowIndex: number): void {
+    this.playStatus.row = rowIndex;
     this.play(PlayStatusMode.LoopRow);
   }
 
