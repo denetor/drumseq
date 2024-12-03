@@ -15,6 +15,7 @@ import {EditMeasureComponent} from '../components/edit-measure/edit-measure.comp
 import {IEditMeasureRequest} from '../core/models/edit-measure-request.interface';
 import {Row} from '../core/models/row.class';
 import {PlayStatusMode} from '../core/models/play-status-mode.enum';
+import {Measure} from '../core/models/measure.class';
 
 @Component({
   selector: 'app-player',
@@ -136,6 +137,17 @@ export class PlayerComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+
+  playMeasureLoop(measure: Measure): void {
+    // TODO create linear array of intervals of the given measure
+    // TODO create subscriber of those ticks only
+    // TODO subscribe and play current tick
+  }
+
+  stopMeasureLoop() {
+    // TODO unsubscribe measure loop subscriber
   }
 
 
