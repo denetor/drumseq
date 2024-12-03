@@ -1,7 +1,7 @@
 <p>{{ project.name }}</p>
 <div>
   BPM: <input type="number" [(ngModel)]="project.configuration.bpm"> -
-  <button (click)="play()">Start</button>
+  <button (click)="playProject()">Start</button>
   <button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
   <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -

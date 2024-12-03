@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Project} from '../core/models/project.class';
 import {TabViewerComponent} from '../components/tab-viewer/tab-viewer.component';
 import {interval, Observable, Subscription} from 'rxjs';
@@ -12,10 +12,9 @@ import {IProjectState} from '../store/project/project.reducer';
 import {ProjectActions} from '../store/project/project.actions';
 import {InstrumentsSet} from '../core/models/instruments-set.class';
 import {EditMeasureComponent} from '../components/edit-measure/edit-measure.component';
-import {Measure} from '../core/models/measure.class';
 import {IEditMeasureRequest} from '../core/models/edit-measure-request.interface';
-import {JsonPipe} from '@angular/common';
 import {Row} from '../core/models/row.class';
+import {PlayStatusMode} from '../core/models/play-status-mode.enum';
 
 @Component({
   selector: 'app-player',
@@ -25,7 +24,7 @@ import {Row} from '../core/models/row.class';
     TabViewerComponent,
     FormsModule,
     JsonExportComponent,
-    JsonPipe,
+
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass',
@@ -77,19 +76,58 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Starts the playback of the project if it is not already playing.
-   * This method initializes the beat interval and subscribes to a beat tracker that advances
-   * the playback state and performs associated actions such as updating the beat and metronome.
-   * @return {void}
+   * Initiates the playback of the current project.
+   * This method changes the play status to `PlayProject` mode, which starts playing the project content.
+   *
+   * @return {void} This method does not return a value.
    */
-  play(): void {
+  playProject(): void {
+    this.play(PlayStatusMode.PlayProject);
+  }
+
+
+  /**
+   * Initiates playback of the current musical measure in loop mode.
+   * This method ensures that the measure is repeatedly played according
+   * to the defined status mode for looping measures.
+   *
+   * @return {void} There is no return value, as this method operates
+   * directly on the state of the playback.
+   */
+  playMeasure(): void {
+    this.play(PlayStatusMode.LoopMeasure);
+  }
+
+
+  /**
+   * Executes playback for a single row in loop mode.
+   * The playRow method initiates playback of audio or music data specifically for a single row, configured
+   * to repeat continuously in a loop. This can be useful for loops, phrases, or segments that need repeated
+   * playback without advancing to subsequent rows or sections.
+   *
+   * @return {void} This method does not return a value.
+   */
+  playRow(): void {
+    this.play(PlayStatusMode.LoopRow);
+  }
+
+
+  /**
+   * Initiates the play sequence based on the specified mode. If the play status is not already active,
+   * it sets the play status to the beginning and subscribes to beat intervals, advancing through the
+   * musical ticks and performing playback actions.
+   *
+   * @param {PlayStatusMode} mode - The mode in which the playback should start. Determines the initial play settings.
+   * @return {void} - This method does not return a value.
+   */
+  play(mode: PlayStatusMode): void {
     if (!this.playStatus.playing) {
-      this.playStatus.setAtStart();
+      this.playStatus.setAtStart(mode);
       this.beatQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
       this.beatQuarterSubscription = this.beatQuarter$.subscribe(
         (tick) => {
           this.unEnhanceBeat(this.playStatus);
-          this.playStatus = this.advanceTick(this.project, this.playStatus);
+          this.playStatus.advanceTick(this.project);
           this.enhanceBeat(this.playStatus);
           this.metronome(this.playStatus);
           this.playBeat(this.playStatus);
@@ -97,6 +135,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
       );
     }
   }
+
 
 
   /**
@@ -111,36 +150,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.playStatus.playing = false;
   }
 
-
-  /**
-   * Advances the musical tick within a project by incrementing the quarter, beat, measure, or row as necessary.
-   * Resets the counters when they exceed their defined limits in the project's configuration.
-   * Stops playback if the end of the available rows in the project is reached.
-   *
-   * @param {Project} project - The project containing configuration and rows data used to determine tick advancement.
-   * @param {PlayStatus} status - The current play status representing the current position in the project.
-   * @return {PlayStatus} The updated play status after advancing the tick.
-   */
-  advanceTick(project: Project, status: PlayStatus): PlayStatus {
-    status.quarter++;
-    if (status.quarter >= 4) {
-      status.quarter = 0;
-      status.beat++;
-    }
-    if (status.beat >= this.project.configuration.beatsPerMeasure) {
-      status.beat = 0;
-      status.measure++;
-    }
-    if (status.measure >= this.project.configuration.measuresPerBar) {
-      status.measure = 0;
-      status.row++;
-    }
-    if (status.row >= project.rows.length) {
-      status.row = 0;
-      this.stop();
-    }
-    return status;
-  }
 
 
   /**
