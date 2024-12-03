@@ -94,7 +94,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
    * @return {void} There is no return value, as this method operates
    * directly on the state of the playback.
    */
-  playMeasure(): void {
+  playMeasure(rowIndex: number, measureIndex: number): void {
+    this.playStatus.row = rowIndex;
+    this.playStatus.measure = measureIndex;
     this.play(PlayStatusMode.LoopMeasure);
   }
 
@@ -288,6 +290,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Deletes a row at the specified index from the project's rows and updates the store.
+   *
+   * @param {number} rowIndex - The index of the row to be deleted.
+   * @return {void} This method does not return a value.
+   */
   deleteRow(rowIndex: number): void {
     const newRows: Row[] = [];
     for (let i=0; i<this.project.rows.length; i++) {
@@ -296,6 +304,20 @@ export class PlayerComponent implements OnInit, OnDestroy {
       }
     }
     this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
+  }
+
+
+  /**
+   * Handles the event triggered for playing a specific measure of a specific row.
+   * This function takes the event containing the row index and measure index and executes playMeasure with those indices.
+   *
+   * @param {Object} playMeasureEvent - The event object containing the indices information.
+   * @param {number} playMeasureEvent.rowIndex - The index of the row in the musical piece where the measure exists.
+   * @param {number} playMeasureEvent.measureIndex - The index of the measure within the specified row to be played.
+   * @return {void} This function does not return any value.
+   */
+  handlePlayMeasureEvent(playMeasureEvent: {rowIndex: number, measureIndex: number}): void {
+    this.playMeasure(playMeasureEvent.rowIndex, playMeasureEvent.measureIndex);
   }
 
 

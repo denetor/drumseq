@@ -29,6 +29,7 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
   protected measure: Measure;
   @Input() editMeasureRequest: IEditMeasureRequest | undefined;
   @Output() save: EventEmitter<IEditMeasureRequest> = new EventEmitter();
+  @Output() play: EventEmitter<{rowIndex: number, measureIndex: number}> = new EventEmitter();
 
 
   constructor(
@@ -161,6 +162,18 @@ export  class EditMeasureComponent implements OnInit, OnDestroy {
       for (let j = 0; j < this.measure.beats[i].quarters.length; j++) {
         this.measure.beats[i].quarters[j].notes = [];
       }
+    }
+  }
+
+
+  /**
+   * Emits the play event with the rowIndex and measureIndex from the editMeasureRequest.
+   *
+   * @return {void} Does not return a value.
+   */
+  emitPlay(): void {
+    if (this.editMeasureRequest && !!this.editMeasureRequest.rowIndex && !!this.editMeasureRequest.measureIndex) {
+      this.play.emit({rowIndex: this.editMeasureRequest.rowIndex, measureIndex: this.editMeasureRequest.measureIndex});
     }
   }
 
