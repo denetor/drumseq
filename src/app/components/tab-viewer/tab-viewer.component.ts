@@ -8,6 +8,7 @@ import {IAppState} from '../../store/app-state.interface';
 import {JsonPipe} from '@angular/common';
 import {Measure} from '../../core/models/measure.class';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
+import {Row} from '../../core/models/row.class';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -19,8 +20,11 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
           [row]="row"
           [rowIndex]="i"
           [projectConfiguration]="project.configuration"
+          [clipboardRow]="clipboardRow"
           (editMeasure)="emitEditMeasure($event)"
           (deleteRow)="emitDeleteRow($event)"
+          (copyRow)="emitCopyRow($event)"
+          (pasteRow)="emitPasteRow($event)"
           (playRow)="emitPlayRow($event)"
         ></app-tab-viewer-row>
       }
@@ -39,9 +43,12 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   project: Project | undefined;
   projectState$: Observable<IProjectState>;
+  @Input() clipboardRow: Row | undefined = undefined;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
   @Output() addRow = new EventEmitter();
   @Output() deleteRow = new EventEmitter<number>();
+  @Output() copyRow = new EventEmitter<Row>();
+  @Output() pasteRow = new EventEmitter<number>();
   @Output() playRow = new EventEmitter<number>();
 
 
@@ -83,6 +90,16 @@ export class TabViewerComponent implements OnInit, OnDestroy {
 
   emitDeleteRow(rowIndex: number) {
       this.deleteRow.emit(rowIndex);
+  }
+
+
+  emitCopyRow(row: Row) {
+    this.copyRow.emit(row);
+  }
+
+
+  emitPasteRow(rowIndex: number) {
+    this.pasteRow.emit(rowIndex);
   }
 
 

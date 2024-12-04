@@ -43,6 +43,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   audioContext: AudioContext;
   instruments: InstrumentsSet;
   editMeasureRequest: IEditMeasureRequest | undefined;
+  copiedMeasure: Measure | undefined;
+  copiedRow: Row | undefined;
 
 
   constructor(
@@ -346,6 +348,40 @@ export class PlayerComponent implements OnInit, OnDestroy {
       }
     }
     this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
+  }
+
+
+  /**
+   * Copies the provided row object and stores the clone in the copiedRow attribute.
+   *
+   * @param {Row} row - The row object to be copied. It should have a clone method that returns a copy of itself.
+   * @return {void} This method does not return anything.
+   */
+  copyRow(row: Row): void {
+    this.copiedRow = row.clone();
+  }
+
+
+  /**
+   * Inserts a copied row into the project's rows at the specified index if a row has been copied.
+   * The copied row is inserted, and the current rows are adjusted to accommodate the new insertion.
+   * After pasting, the copied row is cleared to prevent additional pasting without copying again.
+   *
+   * @param rowIndex - The index at which the copied row should be inserted.
+   * @return void - This method does not return anything.
+   */
+  pasteRow(rowIndex: number): void {
+    if (this.copiedRow) {
+      const newRows: Row[] = [];
+      for (let i=0; i<this.project.rows.length; i++) {
+        if (i !== rowIndex) {
+          newRows.push(this.project.rows[i].clone());
+        }
+      }
+      newRows.splice(rowIndex, 0, this.copiedRow);
+      this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
+      this.copiedRow = undefined;
+    }
   }
 
 

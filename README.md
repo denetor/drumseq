@@ -5,9 +5,13 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 
 ## TODO
 - Fix bpm input
-- Copy measure
-- Copy row
+- Copy/paste measure
 - Common measure clips library
+
+### Further improvements
+- Angular Material UI
+- Backend with users
+- Pentagram representation of rows
 
 ## Development server
 

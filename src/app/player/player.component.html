@@ -8,9 +8,12 @@
   <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
 </div>
 <app-tab-viewer
+  [clipboardRow]="copiedRow"
   (editMeasure)="editMeasure($event)"
   (addRow)="addEmptyRow()"
   (deleteRow)="deleteRow($event)"
+  (copyRow)="copyRow($event)"
+  (pasteRow)="pasteRow($event)"
   (playRow)="playRow($event)"
 ></app-tab-viewer>
 @if (editMeasureRequest) {
