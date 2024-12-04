@@ -5,7 +5,7 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 
 ## TODO
 - Common measure clips library
-- - Angular Material UI
+- Angular Material UI
 
 ### Further improvements
 - Backend with users
@@ -16,6 +16,7 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 ### Tech stack
 - node 20
 - angular 18
+- angular material 17
 
 Run `npm run start` for a dev server. Navigate to `http://localhost:4201/`. The application will automatically reload if you change any of the source files.
 

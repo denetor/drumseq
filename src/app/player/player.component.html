@@ -1,11 +1,12 @@
 <p>{{ project.name }}</p>
 <div>
   BPM: <input type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}"> -
-  <button (click)="playProject()">Play</button>
+  <button mat-button (click)="playProject()">Play</button>
   <button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
   <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
   <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
+  <mat-slide-toggle>Toggle me!</mat-slide-toggle>
 </div>
 <app-tab-viewer
   [clipboardRow]="copiedRow"
