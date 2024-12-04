@@ -85,6 +85,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  setBpm(target: any): void {
+    console.log({target: target.value});
+    try {
+      if (target && target.value) {
+        this.store.dispatch(ProjectActions.updateBpm({bpm: parseInt(target.value)}));
+      }
+    } catch (e) {}
+  }
+
+
   /**
    * Initiates the playback of the current project.
    * This method changes the play status to `PlayProject` mode, which starts playing the project content.

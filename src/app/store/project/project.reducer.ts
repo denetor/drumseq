@@ -35,6 +35,16 @@ export const projectReducer = createReducer(
 
 
   /**
+   * Update the bpm property of the project
+   */
+  on(ProjectActions['updateBpm'], (state: IProjectState, action) => {
+    const newProject = state.project.clone();
+    newProject.configuration.bpm = action.bpm;
+    return {project: newProject};
+  }),
+
+
+  /**
    * Append an empty row at the end of the project
    */
   on(ProjectActions['addEmptyRow'], (state: IProjectState, action) => {

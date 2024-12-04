@@ -1,6 +1,6 @@
 <p>{{ project.name }}</p>
 <div>
-  BPM: <input type="number" [disabled]="true" [(ngModel)]="project.configuration.bpm"> -
+  BPM: <input type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}"> -
   <button (click)="playProject()">Play</button>
   <button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
