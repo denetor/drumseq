@@ -145,6 +145,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Initiates the playback loop for a given musical measure. The method plays each quarter note within the measure
+   * in a loop, timing it according to the project's configured beats per minute (BPM). It subscribes to a
+   * timed observable stream that triggers the playback of notes associated with each quarter.
+   *
+   * @param measure The measure to be played in a loop. This measure consists of beats, each containing quarters, and each quarter may contain notes to be played.
+   * @return void The method does not return a value. It sets up a subscription to handle the playback internally.
+   */
   playMeasureLoop(measure: Measure): void {
     // create linear array of  quarters of the given measure
     const quarters: Quarter[] = [];
@@ -155,6 +163,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
     // create subscriber of those ticks only
     this.playMeasureQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
+    this.playMeasureQuarterSubscription.unsubscribe();
     this.playMeasureQuarterSubscription = this.playMeasureQuarter$.subscribe(
       (quarterIndex) => {
         const notes = quarters[quarterIndex % quarters.length].notes;
@@ -168,7 +177,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   stopMeasureLoop() {
-    // TODO unsubscribe measure loop subscriber
     this.playMeasureQuarterSubscription.unsubscribe();
   }
 
