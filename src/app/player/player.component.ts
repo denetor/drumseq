@@ -304,11 +304,28 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Copies the given measure and assigns it to the internal storage for later use.
+   *
+   * @param {Measure} measure - The measure object to be copied. It is expected to provide a clone method.
+   * @return {void} Does not return a value.
+   */
   copyMeasure(measure: Measure): void {
     this.copiedMeasure = measure.clone();
   }
 
 
+  /**
+   * Pastes a copied measure into the specified row and measure index. If a measure is currently
+   * copied, it updates the rows in the project's data store by replacing the measure at the given
+   * indices with the copied measure, and then clears the copied measure buffer.
+   *
+   * @param pasteRequest An object containing the indices for the row and measure where the copied
+   *                     measure should be pasted. It includes:
+   *                     - rowIndex: The index of the row where the measure is to be pasted.
+   *                     - measureIndex: The index of the measure within the row where the paste will occur.
+   * @return void
+   */
   pasteMeasure(pasteRequest: {rowIndex: number, measureIndex: number}): void {
     if (this.copiedMeasure) {
       this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
