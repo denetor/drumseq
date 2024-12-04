@@ -33,7 +33,10 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
           [rowIndex]="rowIndex"
           [measureIndex]="i"
           [projectConfiguration]="projectConfiguration"
+          [clipboardMeasure]="clipboardMeasure"
           (edit)="emitEditMeasure($event)"
+          (copy)="emitCopyMeasure($event)"
+          (paste)="emitPasteMeasure($event)"
         ></app-tab-viewer-measure>
       }
       <div class="inline">
@@ -61,7 +64,10 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
   @Input() rowIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
   @Input() clipboardRow: Row | undefined = undefined;
+  @Input() clipboardMeasure: Measure | undefined = undefined;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
+  @Output() copyMeasure = new EventEmitter<Measure>();
+  @Output() pasteMeasure = new EventEmitter<{rowIndex: number, measureIndex: number}>();
   @Output() deleteRow = new EventEmitter<number>();
   @Output() copyRow = new EventEmitter<Row>();
   @Output() pasteRow = new EventEmitter<number>();
@@ -93,6 +99,16 @@ export class TabViewerRowComponent implements OnInit, OnDestroy {
 
   emitEditMeasure(request: IEditMeasureRequest) {
     this.editMeasure.emit(request);
+  }
+
+
+  emitCopyMeasure(measure: Measure): void {
+    this.copyMeasure.emit(measure);
+  }
+
+
+  emitPasteMeasure(pasteRequest: {rowIndex: number, measureIndex: number}): void {
+    this.pasteMeasure.emit(pasteRequest);
   }
 
 

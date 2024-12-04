@@ -5,7 +5,6 @@ https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions e
 
 ## TODO
 - Fix bpm input
-- Copy/paste measure
 - Common measure clips library
 
 ### Further improvements

@@ -17,6 +17,7 @@ import {Row} from '../core/models/row.class';
 import {PlayStatusMode} from '../core/models/play-status-mode.enum';
 import {Measure} from '../core/models/measure.class';
 import {Quarter} from '../core/models/quarter.class';
+import {TabViewerRowComponent} from '../components/tab-viewer/tab-viewer-row.component';
 
 @Component({
   selector: 'app-player',
@@ -26,6 +27,7 @@ import {Quarter} from '../core/models/quarter.class';
     TabViewerComponent,
     FormsModule,
     JsonExportComponent,
+    TabViewerRowComponent,
 
   ],
   templateUrl: './player.component.html',
@@ -299,6 +301,23 @@ export class PlayerComponent implements OnInit, OnDestroy {
    */
   editMeasure(request: IEditMeasureRequest): void {
     this.editMeasureRequest = request;
+  }
+
+
+  copyMeasure(measure: Measure): void {
+    this.copiedMeasure = measure.clone();
+  }
+
+
+  pasteMeasure(pasteRequest: {rowIndex: number, measureIndex: number}): void {
+    if (this.copiedMeasure) {
+      this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
+          pasteRequest.rowIndex,
+          pasteRequest.measureIndex,
+          this.copiedMeasure,
+        )}));
+      this.copiedMeasure = undefined;
+    }
   }
 
 

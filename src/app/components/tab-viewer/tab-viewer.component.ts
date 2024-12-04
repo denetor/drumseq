@@ -9,6 +9,7 @@ import {JsonPipe} from '@angular/common';
 import {Measure} from '../../core/models/measure.class';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 import {Row} from '../../core/models/row.class';
+import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -21,7 +22,10 @@ import {Row} from '../../core/models/row.class';
           [rowIndex]="i"
           [projectConfiguration]="project.configuration"
           [clipboardRow]="clipboardRow"
+          [clipboardMeasure]="clipboardMeasure"
           (editMeasure)="emitEditMeasure($event)"
+          (copyMeasure)="emitCopyMeasure($event)"
+          (pasteMeasure)="emitPasteMeasure($event)"
           (deleteRow)="emitDeleteRow($event)"
           (copyRow)="emitCopyRow($event)"
           (pasteRow)="emitPasteRow($event)"
@@ -36,6 +40,7 @@ import {Row} from '../../core/models/row.class';
   standalone: true,
   imports: [
     TabViewerRowComponent,
+    TabViewerMeasureComponent,
   ],
   styleUrls: ['./tab-viewer.component.sass']
 })
@@ -44,7 +49,10 @@ export class TabViewerComponent implements OnInit, OnDestroy {
   project: Project | undefined;
   projectState$: Observable<IProjectState>;
   @Input() clipboardRow: Row | undefined = undefined;
+  @Input() clipboardMeasure: Measure | undefined = undefined;
   @Output() editMeasure = new EventEmitter<IEditMeasureRequest>();
+  @Output() copyMeasure = new EventEmitter<Measure>();
+  @Output() pasteMeasure = new EventEmitter<{rowIndex: number, measureIndex: number}>();
   @Output() addRow = new EventEmitter();
   @Output() deleteRow = new EventEmitter<number>();
   @Output() copyRow = new EventEmitter<Row>();
@@ -80,6 +88,16 @@ export class TabViewerComponent implements OnInit, OnDestroy {
 
   emitEditMeasure(request: IEditMeasureRequest) {
     this.editMeasure.emit(request);
+  }
+
+
+  emitCopyMeasure(measure: Measure): void {
+    this.copyMeasure.emit(measure);
+  }
+
+
+  emitPasteMeasure(pasteRequest: {rowIndex: number, measureIndex: number}): void {
+    this.pasteMeasure.emit(pasteRequest);
   }
 
 

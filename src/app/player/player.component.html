@@ -9,7 +9,10 @@
 </div>
 <app-tab-viewer
   [clipboardRow]="copiedRow"
+  [clipboardMeasure]="copiedMeasure"
   (editMeasure)="editMeasure($event)"
+  (copyMeasure)="copyMeasure($event)"
+  (pasteMeasure)="pasteMeasure($event)"
   (addRow)="addEmptyRow()"
   (deleteRow)="deleteRow($event)"
   (copyRow)="copyRow($event)"
