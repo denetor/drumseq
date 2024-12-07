@@ -9,6 +9,7 @@ import {IProjectState} from '../../store/project/project.reducer';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
+import {Row} from '../../core/models/row.class';
 
 @Component({
   selector: 'app-tab-viewer-measure',
@@ -37,6 +38,8 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
     </div>
     <div>
       <button (click)="emitEdit()">Edit</button>
+      <button (click)="emitCopy()">Copy</button>
+      <button *ngIf="clipboardMeasure" (click)="emitPaste()">Paste</button>
     </div>
   `,
   standalone: true,
@@ -55,7 +58,10 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
   @Input() rowIndex: number;
   @Input() measureIndex: number;
   @Input() projectConfiguration: ProjectConfiguration;
+  @Input() clipboardMeasure: Measure | undefined = undefined;
   @Output() edit = new EventEmitter<IEditMeasureRequest>();
+  @Output() copy = new EventEmitter<Measure>();
+  @Output() paste = new EventEmitter<{rowIndex: number, measureIndex: number}>();
 
 
   constructor(
@@ -91,6 +97,16 @@ export class TabViewerMeasureComponent implements OnInit, OnDestroy {
       measureIndex: this.measureIndex,
       measure: this.measure,
     });
+  }
+
+
+  emitCopy(): void {
+    this.copy.emit(this.measure);
+  }
+
+
+  emitPaste(): void {
+    this.paste.emit({rowIndex: this.rowIndex, measureIndex: this.measureIndex});
   }
 
 }

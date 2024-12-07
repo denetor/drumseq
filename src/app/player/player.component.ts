@@ -17,6 +17,7 @@ import {Row} from '../core/models/row.class';
 import {PlayStatusMode} from '../core/models/play-status-mode.enum';
 import {Measure} from '../core/models/measure.class';
 import {Quarter} from '../core/models/quarter.class';
+import {TabViewerRowComponent} from '../components/tab-viewer/tab-viewer-row.component';
 
 @Component({
   selector: 'app-player',
@@ -26,6 +27,7 @@ import {Quarter} from '../core/models/quarter.class';
     TabViewerComponent,
     FormsModule,
     JsonExportComponent,
+    TabViewerRowComponent,
 
   ],
   templateUrl: './player.component.html',
@@ -43,6 +45,8 @@ export class PlayerComponent implements OnInit, OnDestroy {
   audioContext: AudioContext;
   instruments: InstrumentsSet;
   editMeasureRequest: IEditMeasureRequest | undefined;
+  copiedMeasure: Measure | undefined;
+  copiedRow: Row | undefined;
 
 
   constructor(
@@ -78,6 +82,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.stop();
     this.subscription.unsubscribe();
     this.beatQuarterSubscription.unsubscribe();
+  }
+
+
+  setBpm(target: any): void {
+    console.log({target: target.value});
+    try {
+      if (target && target.value) {
+        this.store.dispatch(ProjectActions.updateBpm({bpm: parseInt(target.value)}));
+      }
+    } catch (e) {}
   }
 
 
@@ -145,6 +159,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
 
+  /**
+   * Initiates the playback loop for a given musical measure. The method plays each quarter note within the measure
+   * in a loop, timing it according to the project's configured beats per minute (BPM). It subscribes to a
+   * timed observable stream that triggers the playback of notes associated with each quarter.
+   *
+   * @param measure The measure to be played in a loop. This measure consists of beats, each containing quarters, and each quarter may contain notes to be played.
+   * @return void The method does not return a value. It sets up a subscription to handle the playback internally.
+   */
   playMeasureLoop(measure: Measure): void {
     // create linear array of  quarters of the given measure
     const quarters: Quarter[] = [];
@@ -155,6 +177,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
     // create subscriber of those ticks only
     this.playMeasureQuarter$ = interval(60000 / this.project.configuration.bpm / 4);
+    this.playMeasureQuarterSubscription.unsubscribe();
     this.playMeasureQuarterSubscription = this.playMeasureQuarter$.subscribe(
       (quarterIndex) => {
         const notes = quarters[quarterIndex % quarters.length].notes;
@@ -168,7 +191,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   stopMeasureLoop() {
-    // TODO unsubscribe measure loop subscriber
     this.playMeasureQuarterSubscription.unsubscribe();
   }
 
@@ -293,6 +315,40 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   /**
+   * Copies the given measure and assigns it to the internal storage for later use.
+   *
+   * @param {Measure} measure - The measure object to be copied. It is expected to provide a clone method.
+   * @return {void} Does not return a value.
+   */
+  copyMeasure(measure: Measure): void {
+    this.copiedMeasure = measure.clone();
+  }
+
+
+  /**
+   * Pastes a copied measure into the specified row and measure index. If a measure is currently
+   * copied, it updates the rows in the project's data store by replacing the measure at the given
+   * indices with the copied measure, and then clears the copied measure buffer.
+   *
+   * @param pasteRequest An object containing the indices for the row and measure where the copied
+   *                     measure should be pasted. It includes:
+   *                     - rowIndex: The index of the row where the measure is to be pasted.
+   *                     - measureIndex: The index of the measure within the row where the paste will occur.
+   * @return void
+   */
+  pasteMeasure(pasteRequest: {rowIndex: number, measureIndex: number}): void {
+    if (this.copiedMeasure) {
+      this.store.dispatch(ProjectActions.updateRows({rows: this.project.getRowsWithReplacedMeasure(
+          pasteRequest.rowIndex,
+          pasteRequest.measureIndex,
+          this.copiedMeasure,
+        )}));
+      this.copiedMeasure = undefined;
+    }
+  }
+
+
+  /**
    * Applies measure changes based on the given editMeasureResponse.
    *
    * @param {IEditMeasureRequest} editMeasureResponse - The response containing information about the measure changes,
@@ -338,6 +394,40 @@ export class PlayerComponent implements OnInit, OnDestroy {
       }
     }
     this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
+  }
+
+
+  /**
+   * Copies the provided row object and stores the clone in the copiedRow attribute.
+   *
+   * @param {Row} row - The row object to be copied. It should have a clone method that returns a copy of itself.
+   * @return {void} This method does not return anything.
+   */
+  copyRow(row: Row): void {
+    this.copiedRow = row.clone();
+  }
+
+
+  /**
+   * Inserts a copied row into the project's rows at the specified index if a row has been copied.
+   * The copied row is inserted, and the current rows are adjusted to accommodate the new insertion.
+   * After pasting, the copied row is cleared to prevent additional pasting without copying again.
+   *
+   * @param rowIndex - The index at which the copied row should be inserted.
+   * @return void - This method does not return anything.
+   */
+  pasteRow(rowIndex: number): void {
+    if (this.copiedRow) {
+      const newRows: Row[] = [];
+      for (let i=0; i<this.project.rows.length; i++) {
+        if (i !== rowIndex) {
+          newRows.push(this.project.rows[i].clone());
+        }
+      }
+      newRows.splice(rowIndex, 0, this.copiedRow);
+      this.store.dispatch(ProjectActions.updateRows({rows: newRows}));
+      this.copiedRow = undefined;
+    }
   }
 
 

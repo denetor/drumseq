@@ -4,10 +4,12 @@
 https://www.7drumcity.com/drum-transcriptions.html has tabs and transcriptions examples
 
 ## TODO
-- Fix bpm input
-- Copy measure
-- Copy row
 - Common measure clips library
+- - Angular Material UI
+
+### Further improvements
+- Backend with users
+- Pentagram representation of rows
 
 ## Development server
 
