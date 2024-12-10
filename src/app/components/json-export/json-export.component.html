@@ -1,12 +1,17 @@
-<p>Import/export</p>
-<div>
-  <form [formGroup]="exportForm">
-    <div>
-      <button title="Esporta il progetto in formato JSON" (click)="exportToJson()">Export to text</button>
-      <button title="Applica il contenuto della textarea" (click)="importFromJson()">Import from text</button>
-    </div>
-    <div>
-      <textarea formControlName="body" rows="10" cols="80"></textarea>
-    </div>
-  </form>
-</div>
+<mat-card>
+  <mat-card-header>
+    <h2>Import/export</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="exportForm">
+      <mat-form-field>
+        <mat-label></mat-label>
+        <textarea matInput formControlName="body" rows="10" cols="80"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <button mat-raised-button title="Esporta il progetto in formato JSON" (click)="exportToJson()">Export to text</button>
+    <button mat-raised-button title="Applica il contenuto della textarea" (click)="importFromJson()">Import from text</button>
+  </mat-card-footer>
+</mat-card>

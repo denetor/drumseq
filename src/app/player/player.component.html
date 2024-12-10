@@ -1,44 +1,55 @@
-<p>{{ project.name }}</p>
-<mat-toolbar>
-  <mat-form-field>
-    <mat-label>BPM</mat-label>
-    <input matInput type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}">
-  </mat-form-field>
+<mat-card>
+  <mat-card-header>
+    <h1>{{ project.name }}</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <mat-form-field>
+        <mat-label>BPM</mat-label>
+        <input matInput type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}">
+      </mat-form-field>
 
-  <button mat-raised-button (click)="playProject()">Play</button>
-  <button mat-raised-button (click)="stop()">Stop</button> -
-  <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
-  <mat-button-toggle-group
-    name="ingredients"
-    aria-label="What to play"
-    multiple
-  >
-    <mat-button-toggle value="metronome">Metronome</mat-button-toggle>
-    <mat-button-toggle value="music">Music</mat-button-toggle>
-  </mat-button-toggle-group>
-  <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
-  <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
-</mat-toolbar>
-<app-tab-viewer
-  [clipboardRow]="copiedRow"
-  [clipboardMeasure]="copiedMeasure"
-  (editMeasure)="editMeasure($event)"
-  (copyMeasure)="copyMeasure($event)"
-  (pasteMeasure)="pasteMeasure($event)"
-  (addRow)="addEmptyRow()"
-  (deleteRow)="deleteRow($event)"
-  (copyRow)="copyRow($event)"
-  (pasteRow)="pasteRow($event)"
-  (playRow)="playRow($event)"
-></app-tab-viewer>
+      <button mat-raised-button (click)="playProject()">Play</button>
+      <button mat-raised-button (click)="stop()">Stop</button> -
+      <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
+      <mat-button-toggle-group
+        name="playToggle"
+        aria-label="What to play"
+        multiple
+        (change)="togglePlay($event)"
+        value="music"
+      >
+        <mat-button-toggle value="metronome">Metronome</mat-button-toggle>
+        <mat-button-toggle value="music">Music</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <app-tab-viewer
+      [clipboardRow]="copiedRow"
+      [clipboardMeasure]="copiedMeasure"
+      (editMeasure)="editMeasure($event)"
+      (copyMeasure)="copyMeasure($event)"
+      (pasteMeasure)="pasteMeasure($event)"
+      (addRow)="addEmptyRow()"
+      (deleteRow)="deleteRow($event)"
+      (copyRow)="copyRow($event)"
+      (pasteRow)="pasteRow($event)"
+      (playRow)="playRow($event)"
+    ></app-tab-viewer>
+  </mat-card-content>
+</mat-card>
+
 @if (editMeasureRequest) {
   <app-edit-measure
+    class="m-t-2rem"
     [editMeasureRequest]="editMeasureRequest"
     (save)="applyMeasureChanges($event)"
     (play)="handlePlayMeasureEvent($event)"
     (stop)="handleStopMeasureEvent()"
   ></app-edit-measure>
 }
-<hr>
-<app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>
+
+<div class="m-t-2rem">
+  <app-json-export [project]="project" (projectChange)="importProject($event)"></app-json-export>
+</div>
+
 

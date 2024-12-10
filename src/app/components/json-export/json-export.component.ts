@@ -1,12 +1,20 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ReactiveFormsModule, UntypedFormBuilder} from '@angular/forms';
 import {Project} from '../../core/models/project.class';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-json-export',
   templateUrl: 'json-export.component.html',
-  imports: [ReactiveFormsModule],
-  styleUrls: [],
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
+  styles: ['mat-form-field { width: 100%}; mat-card-footer { margin: 1rem }'],
   standalone: true,
 })
 export class JsonExportComponent implements OnInit {

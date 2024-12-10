@@ -21,9 +21,10 @@ import {TabViewerRowComponent} from '../components/tab-viewer/tab-viewer-row.com
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatButtonToggleChange, MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-player',
@@ -40,6 +41,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonToggleModule,
     MatToolbarModule,
     MatFormFieldModule,
+    MatCardModule,
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass',
@@ -265,24 +267,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Toggles the state of the metronome between on and off.
-   */
-  toggleMetronome(): void {
-    this.playStatus.metronome = !this.playStatus.metronome;
-  }
-
-
-  /**
-   * Toggles the music playback status.
+   * Toggles the play status for music and metronome based on the button toggle change event.
    *
-   * This method switches the current status of music playback between
-   * playing and paused. If the music is currently playing, it will
-   * pause the music. If the music is paused, it will start playing.
-   *
-   * @return {void}
+   * @param {MatButtonToggleChange} e - The event object representing the change in the toggle button state.
+   * @return {void} This method does not return a value.
    */
-  toggleMusic(): void {
-    this.playStatus.music = !this.playStatus.music;
+  togglePlay(e: MatButtonToggleChange): void {
+    this.playStatus.music = !!e.value.includes('music');
+    this.playStatus.metronome = !!e.value.includes('metronome');
   }
 
 
