@@ -18,12 +18,9 @@ import {PlayStatusMode} from '../core/models/play-status-mode.enum';
 import {Measure} from '../core/models/measure.class';
 import {Quarter} from '../core/models/quarter.class';
 import {TabViewerRowComponent} from '../components/tab-viewer/tab-viewer-row.component';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @Component({
   selector: 'app-player',
@@ -37,9 +34,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatButtonModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatButtonToggleModule,
-    MatToolbarModule,
-    MatFormFieldModule,
   ],
   templateUrl: './player.component.html',
   styleUrl: './player.component.sass',

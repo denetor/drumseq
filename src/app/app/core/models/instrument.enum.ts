@@ -1,0 +1,16 @@
+export enum Instrument {
+  BASS = 0,
+  SNARE,
+  HAT,
+  OPEN_HAT,
+  HI_TOM,
+  MID_TOM,
+  FLOOR_TOM,
+  FLOOR_TOM_LOW,
+  CHINA,
+  CRASH,
+  RIDE,
+  COW_BELL,
+  METRONOME,
+  METRONOME_HI,
+}

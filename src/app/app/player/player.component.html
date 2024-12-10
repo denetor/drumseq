@@ -1,24 +1,15 @@
-<p>{{ project.name }}</p>
-<mat-toolbar>
+<h1>{{ project.name }}</h1>
+<div>
   <mat-form-field>
     <mat-label>BPM</mat-label>
-    <input matInput type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}">
+    <input matInput  type="number" (change)="setBpm($event.target)" value="{{ project.configuration.bpm }}">
   </mat-form-field>
-
   <button mat-raised-button (click)="playProject()">Play</button>
   <button mat-raised-button (click)="stop()">Stop</button> -
   <span>row: {{playStatus.row }} measure: {{ playStatus.measure }} beat: {{ playStatus.beat }} quarter: {{ playStatus.quarter }}</span> -
-  <mat-button-toggle-group
-    name="ingredients"
-    aria-label="What to play"
-    multiple
-  >
-    <mat-button-toggle value="metronome">Metronome</mat-button-toggle>
-    <mat-button-toggle value="music">Music</mat-button-toggle>
-  </mat-button-toggle-group>
-  <span (click)="toggleMetronome()">Play metronome: {{ playStatus.metronome ? 'ON' : 'OFF'}}</span> -
-  <span (click)="toggleMusic()">Play music: {{ playStatus.music ? 'ON' : 'OFF'}}</span>
-</mat-toolbar>
+  Play metronome <mat-slide-toggle [(ngModel)]="playStatus.metronome"></mat-slide-toggle>
+  Play music <mat-slide-toggle [(ngModel)]="playStatus.music"></mat-slide-toggle>
+</div>
 <app-tab-viewer
   [clipboardRow]="copiedRow"
   [clipboardMeasure]="copiedMeasure"

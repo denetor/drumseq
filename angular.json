@@ -3,28 +3,26 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "drumseq": {
+    "angular-material-18-start": {
+      "prefix": "app",
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "sass"
-        }
-      },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/drumseq",
+            "outputPath": "dist/angular-material-18-start",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "sass",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -32,7 +30,8 @@
               }
             ],
             "styles": [
-              "src/styles.sass"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/global-styles.scss"
             ],
             "scripts": []
           },
@@ -64,16 +63,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "drumseq:build:production"
+              "buildTarget": "angular-material-18-start:build:production"
             },
             "development": {
-              "buildTarget": "drumseq:build:development"
+              "buildTarget": "angular-material-18-start:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "port": 4201
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -81,12 +77,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "sass",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -94,7 +87,8 @@
               }
             ],
             "styles": [
-              "src/styles.sass"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
             ],
             "scripts": []
           }
