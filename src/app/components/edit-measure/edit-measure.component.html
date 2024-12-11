@@ -1,33 +1,32 @@
-<h3>Edit measure</h3>
-<div>Row: {{ editMeasureRequest?.rowIndex }} - Measure: {{ editMeasureRequest?.measureIndex}}</div>
-@if (projectConfiguration) {
-  <div class="measure" #measureEditor>
-    <div class="inline">
-      @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
-        <div class="cell">
-          {{ InstrumentService.getSymbol(instrument) }}
-        </div>
-      }
-      <div class="cell"></div>
+<mat-card class="m-t-2rem">
+  <mat-card-header>
+    <h3>Edit measure</h3>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      Row: {{ editMeasureRequest?.rowIndex }} - Measure: {{ editMeasureRequest?.measureIndex}}
     </div>
-    @for (beat of measure.beats; track beat; let beatIndex = $index) {
-      <div class="beat inline" [ngClass]="{even: $even, odd: $odd}">
-        @for (quarter of beat.quarters; track quarter; let quarterIndex = $index) {
-          <div class="quarter inline">
-            @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
-              <div
-                class="cell"
-                [ngClass]="{selected: hasNote(beatIndex, quarterIndex, instrument)}"
-                (click)="toggleNote(beatIndex, quarterIndex, instrument)"
-              >
-                @if (hasNote(beatIndex, quarterIndex, instrument)) {
-                  {{getNote(beatIndex, quarterIndex, instrument).tabSymbol()}}
-                } @else {
-                  .
-                }
+    <div class="measure">
+
+      @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
+        <div>
+          <div class="cell inline">
+            {{ InstrumentService.getSymbol(instrument) }}
+          </div>
+          @for (beat of measure.beats; track beat; let beatIndex = $index) {
+            @for (quarter of beat.quarters; track quarter; let quarterIndex = $index) {
+              <div class="cell inline">
+                .
               </div>
             }
-            <div class="cell">
+          }
+        </div>
+      }
+      <div>
+        <div class="cell inline"></div>
+        @for (beat of measure.beats; track beat; let beatIndex = $index) {
+          @for (quarter of beat.quarters; track quarter; let quarterIndex = $index) {
+            <div class="cell inline">
               @switch ($index) {
                 @case (0) {
                   <strong>{{ beatIndex + 1}}</strong>
@@ -43,16 +42,69 @@
                 }
               }
             </div>
+          }
+        }
+      </div>
+    </div>
+
+    @if (projectConfiguration) {
+      <div class="measure m-t-2rem" #measureEditor>
+        <div class="inline">
+          @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
+            <div class="cell">
+              {{ InstrumentService.getSymbol(instrument) }}
+            </div>
+          }
+        </div>
+        @for (beat of measure.beats; track beat; let beatIndex = $index) {
+          <div class="beat inline" [ngClass]="{even: $even, odd: $odd}">
+            @for (quarter of beat.quarters; track quarter; let quarterIndex = $index) {
+              <div class="quarter inline">
+                @for (instrument of projectConfiguration.visibleInstruments; track instrument) {
+                  <div
+                    class="cell"
+                    [ngClass]="{selected: hasNote(beatIndex, quarterIndex, instrument)}"
+                    (click)="toggleNote(beatIndex, quarterIndex, instrument)"
+                  >
+                    @if (hasNote(beatIndex, quarterIndex, instrument)) {
+                      {{getNote(beatIndex, quarterIndex, instrument).tabSymbol()}}
+                    } @else {
+                      .
+                    }
+                  </div>
+                }
+                <div class="cell">
+                  @switch ($index) {
+                    @case (0) {
+                      <strong>{{ beatIndex + 1}}</strong>
+                    }
+                    @case (1) {
+                      e
+                    }
+                    @case (2) {
+                      &
+                    }
+                    @case (3) {
+                      a
+                    }
+                  }
+                </div>
+              </div>
+            }
           </div>
         }
       </div>
+      <div>
+
+      </div>
     }
-  </div>
-  <div>
-    <button (click)="applyChanges()">Apply</button>
-    <button (click)="cancel()">Cancel</button>
-    <button (click)="clear()">Clear</button>
-    <button (click)="emitPlay()">Loop play</button>
-    <button (click)="emitStop()">Stop loop</button>
-  </div>
-}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="applyChanges()">Apply</button>
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button (click)="clear()">Clear</button>
+    <button mat-raised-button (click)="emitPlay()">Loop play</button>
+    <button mat-raised-button (click)="emitStop()">Stop loop</button>
+  </mat-card-actions>
+</mat-card>
+

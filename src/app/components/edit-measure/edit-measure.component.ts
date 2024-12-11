@@ -10,6 +10,9 @@ import {NgClass, NgIf} from '@angular/common';
 import {Note} from '../../core/models/note.class';
 import {Instrument} from '../../core/models/instrument.enum';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-edit-measure',
@@ -18,7 +21,10 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
   standalone: true,
   imports: [
     NgClass,
-    NgIf
+    NgIf,
+    MatCardModule,
+    MatButtonModule,
+    MatToolbarModule,
   ]
 })
 export  class EditMeasureComponent implements OnInit, OnDestroy {
