@@ -10,6 +10,7 @@ import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/app-state.interface';
 import {Measure} from '../../core/models/measure.class';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-tab-viewer-row',
@@ -40,10 +41,10 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
         ></app-tab-viewer-measure>
       }
       <div class="inline">
-        <button (click)="emitDeleteRow(rowIndex)">Delete bar</button>
-        <button (click)="emitCopyRow()">Copy to clipboard</button>
-        <button *ngIf="clipboardRow" (click)="emitPasteRow()">Paste from clipboard</button>
-        <button (click)="emitPlayRow(rowIndex)">Loop play</button>
+        <button mat-raised-button (click)="emitDeleteRow(rowIndex)">Delete bar</button>
+        <button mat-raised-button (click)="emitCopyRow()">Copy to clipboard</button>
+        <button mat-raised-button *ngIf="clipboardRow" (click)="emitPasteRow()">Paste from clipboard</button>
+        <button mat-raised-button (click)="emitPlayRow(rowIndex)">Loop play</button>
       </div>
     </div>
   `,
@@ -52,6 +53,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
     TabViewerMeasureComponent,
     NgIf,
     JsonPipe,
+    MatButtonModule,
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']

@@ -10,6 +10,7 @@ import {Measure} from '../../core/models/measure.class';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 import {Row} from '../../core/models/row.class';
 import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -33,14 +34,15 @@ import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
         ></app-tab-viewer-row>
       }
     }
-    <div>
-      <button (click)="emitAddRow()">Add row</button>
+    <div class="m-t-2rem">
+      <button mat-raised-button (click)="emitAddRow()">Add row</button>
     </div>
   `,
   standalone: true,
   imports: [
     TabViewerRowComponent,
     TabViewerMeasureComponent,
+    MatButtonModule,
   ],
   styleUrls: ['./tab-viewer.component.sass']
 })
