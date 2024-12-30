@@ -11,6 +11,7 @@ import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interf
 import {Row} from '../../core/models/row.class';
 import {TabViewerMeasureComponent} from './tab-viewer-measure.component';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-tab-viewer',
@@ -35,7 +36,7 @@ import {MatButtonModule} from '@angular/material/button';
       }
     }
     <div class="m-t-2rem">
-      <button mat-raised-button (click)="emitAddRow()">Add row</button>
+      <button mat-fab extended (click)="emitAddRow()" aria-label="Add empty row"><mat-icon>music_note_add</mat-icon>Add row</button>
     </div>
   `,
   standalone: true,
@@ -43,6 +44,7 @@ import {MatButtonModule} from '@angular/material/button';
     TabViewerRowComponent,
     TabViewerMeasureComponent,
     MatButtonModule,
+    MatIconModule,
   ],
   styleUrls: ['./tab-viewer.component.sass']
 })

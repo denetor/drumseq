@@ -25,6 +25,7 @@ import {MatButtonToggleChange, MatButtonToggleModule} from '@angular/material/bu
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-player',
@@ -36,6 +37,7 @@ import {MatCardModule} from '@angular/material/card';
     JsonExportComponent,
     TabViewerRowComponent,
     MatButtonModule,
+    MatIconModule,
     MatInputModule,
     MatSlideToggleModule,
     MatButtonToggleModule,

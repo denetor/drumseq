@@ -11,6 +11,7 @@ import {IAppState} from '../../store/app-state.interface';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 import {Row} from '../../core/models/row.class';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-tab-viewer-measure',
@@ -37,10 +38,10 @@ import {MatButtonModule} from '@angular/material/button';
         |
       </div>
     </div>
-    <div class="m-t-1rem">
-      <button mat-raised-button (click)="emitEdit()">Edit</button>
-      <button mat-raised-button (click)="emitCopy()">Copy</button>
-      <button mat-raised-button *ngIf="clipboardMeasure" (click)="emitPaste()">Paste</button>
+    <div class="inline m-t-1rem">
+      <button mat-mini-fab (click)="emitEdit()" aria-label="Edit"><mat-icon>edit_square</mat-icon></button>
+      <button mat-mini-fab (click)="emitCopy()" aria-label="Copy"><mat-icon>content_copy</mat-icon></button>
+      <button mat-mini-fab (click)="emitPaste()" aria-label="Paste" *ngIf="clipboardMeasure"><mat-icon>content_paste</mat-icon></button>
     </div>
   `,
   standalone: true,
@@ -48,6 +49,7 @@ import {MatButtonModule} from '@angular/material/button';
     TabViewerBeatComponent,
     NgIf,
     MatButtonModule,
+    MatIconModule,
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']

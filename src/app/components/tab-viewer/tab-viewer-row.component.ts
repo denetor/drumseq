@@ -11,6 +11,7 @@ import {IAppState} from '../../store/app-state.interface';
 import {Measure} from '../../core/models/measure.class';
 import {IEditMeasureRequest} from '../../core/models/edit-measure-request.interface';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-tab-viewer-row',
@@ -41,10 +42,10 @@ import {MatButtonModule} from '@angular/material/button';
         ></app-tab-viewer-measure>
       }
       <div class="inline">
-        <button mat-raised-button (click)="emitDeleteRow(rowIndex)">Delete bar</button>
-        <button mat-raised-button (click)="emitCopyRow()">Copy to clipboard</button>
-        <button mat-raised-button *ngIf="clipboardRow" (click)="emitPasteRow()">Paste from clipboard</button>
-        <button mat-raised-button (click)="emitPlayRow(rowIndex)">Loop play</button>
+        <button mat-mini-fab (click)="emitDeleteRow(rowIndex)" aria-label="Delete row"><mat-icon>delete</mat-icon></button>
+        <button mat-mini-fab (click)="emitCopyRow()" aria-label="Copy to clipboard"><mat-icon>content_copy</mat-icon></button>
+        <button mat-mini-fab (click)="emitPasteRow()" aria-label="Paste from clipboard" *ngIf="clipboardRow"><mat-icon>content_paste</mat-icon></button>
+        <button mat-mini-fab (click)="emitPlayRow(rowIndex)" aria-label="Loop play"><mat-icon>repeat</mat-icon></button>
       </div>
     </div>
   `,
@@ -54,6 +55,7 @@ import {MatButtonModule} from '@angular/material/button';
     NgIf,
     JsonPipe,
     MatButtonModule,
+    MatIconModule,
   ],
   // templateUrl: './tab-viewer.component.html',
   styleUrls: ['./tab-viewer.component.sass']
